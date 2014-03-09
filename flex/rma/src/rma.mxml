@@ -1,0 +1,1267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="800" height="550" minWidth="600" minHeight="500"
+			   creationComplete="createHandler()">
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.net.URLLoader;
+			import flash.net.FileReference;
+			
+			import flashx.textLayout.formats.Float;
+			
+			import mx.controls.Alert;
+			import mx.controls.Menu;
+			import mx.controls.Text;
+			import mx.core.UIComponent;
+			import mx.core.mx_internal;
+			import mx.events.CloseEvent;
+			import mx.events.MenuEvent;
+			import mx.formatters.*;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.graphics.codec.PNGEncoder;
+			import mx.graphics.shaderClasses.ColorBurnShader;
+			import mx.managers.CursorManager;
+			import mx.managers.PopUpManager;
+			import mx.utils.UIDUtil;
+			import flash.utils.Timer;
+			import flash.events.ProgressEvent;
+			
+			import selflib.MyDashLine;
+			
+			import spark.primitives.Rect;
+			
+			private var fileRefer:FileReference = new FileReference();
+			
+			private var m_byteArray:ByteArray;  
+			private var m_bitmapData:BitmapData;  
+			private var m_printPic:BitmapData;
+			private var m_prePic:BitmapData;
+			
+			private var m_frontPrintPic:ByteArray = null;
+			private var m_frontPrePic:ByteArray = null;
+			private var m_backPrintPic:ByteArray = null;
+			private var m_backPrePic:ByteArray = null;
+			
+			private var m_loader:Loader=new Loader(); 
+			
+			private var m_imgWidth:int;
+			private var m_imgHeight:int;
+			private var m_drawPosX:int;
+			private var m_drawPosY:int;
+			private var m_drawWidth:int;
+			private var m_drawHeight:int;
+			private var BLOCKSIZE:int = 200;
+			
+			private var m_vertex:Array = new Array();
+			private var m_cropCenter:Point = new Point();
+			private var m_cosTheta:Number;
+			private var m_sinTheta:Number;
+			
+			private var m_cropRadius:Number;
+			private var m_cropAngle:Number;
+			
+			private var m_croping:Boolean = false;
+			private var m_cropFront:Boolean = true;
+			private var m_cropRatio:int = 2;
+			private var m_cropDraging:Boolean = false;
+			private var m_cropResizing:Boolean = false;
+			private var m_cropAngling:Boolean = false;
+			
+			private var m_posDragRadius:int = 4;
+			private var m_angleDragRadius:int = 5;
+			
+			private var m_cursorDrag:Boolean = false;
+			private var m_cursorStatus:int;
+			private const CURSOR_FREE:int = 0;
+			private const CURSOR_DRAG:int = 1;
+			private const CURSOR_RESIZE:int = 2;
+			private const CURSOR_ANGLE:int = 3;
+			
+			private var m_lastPoint:Point = new Point();
+			private var m_lastCenter:Point = new Point();
+			private var m_lastRadius:Number;
+			private var m_lastAngle:Number;
+				
+			private var PI:Number = 3.1415926;
+			
+			private var m_boardNum:int = 8;
+			private var m_picFrontWidth:int = 801;
+			private var m_picFrontHeight:int = 401;
+			private var m_picBackWidth:int = 601;
+			private var m_picBackHeight:int = 601;
+			
+			private var m_pSavePic:Image;
+			private var m_bitmap:Bitmap;
+			
+			public var m_isSaveOK:Boolean = false;
+			
+			private var m_request:URLRequest; 
+			private var m_progDlg:progressDlg;
+			
+			private var m_timer:Timer = new Timer(1000);
+			
+			
+			private function createHandler():void{
+				fileRefer.addEventListener(Event.SELECT,selectHandler);	//选择文件
+				fileRefer.addEventListener(Event.COMPLETE,completeHandler);//加载完成
+				fileRefer.addEventListener(SecurityErrorEvent.SECURITY_ERROR,errorHandler);//异常
+				mySource.addEventListener(Event.COMPLETE,imageCompleteHandler);
+				myRuler.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+				myRuler.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
+				myRuler.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
+			}
+			
+			private function selectHandler(event:Event):void{
+				if(fileRefer){
+					fileRefer.load();
+				}
+			}
+			
+			private function completeHandler(event:Event):void{
+				if(fileRefer){
+					mySource.source = fileRefer.data;
+					mySource.smooth = true;
+					trace(mySource.width);
+					m_byteArray = fileRefer.data;  
+					m_loader.contentLoaderInfo.addEventListener(Event.COMPLETE,loaderCompleteHandler);  
+					m_loader.loadBytes(m_byteArray);  
+				}
+				
+			}  
+			
+			private function loaderCompleteHandler(e:Event):void 
+			{  
+				trace("loaderCompleteHandler");  
+				var m_bitmap:Bitmap = Bitmap(m_loader.content);  
+				//m_bitmap.smoothing = true;
+				//m_bitmap.pixelSnapping = PixelSnapping.ALWAYS;
+				m_bitmapData = m_bitmap.bitmapData;  
+				//Alert.show(m_bitmapData.getPixel(4,4).toString(16));
+				m_imgWidth = m_loader.content.width;
+				m_imgHeight = m_loader.content.height;
+				initCropParam();
+				//imageInfo.text = "图像信息: ("+ m_loader.content.width +","+ m_loader.content.height +")"
+				//Alert.show("loader.content.width="+loader.content.width);  
+				//img.addChild(bitmap);  
+			}  
+			
+			private function imageCompleteHandler(event:Event):void{	
+				//Alert.show(mySource.width.toString(10));
+			}
+			
+			private function errorHandler(event:Event):void{
+				trace("error...")
+			}
+			protected function sourceFileContainer_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				fileRefer.browse([new FileFilter("Images(*.jpg;*.gif;*.png)","*.jpg;*.gif;*.png")]);//选择图片格式文件
+			}
+					
+			private var piece_num_list:Object = [{label:"8板"},{label:"12板"}];
+			private function initPopPieceNum():void{
+				var myMenu:Menu = new Menu();
+				myMenu.dataProvider = piece_num_list;
+				myMenu.selectedIndex = 0;
+				myMenu.addEventListener(MenuEvent.ITEM_CLICK,itemClick_pieceNum);
+				pieceNum.popUp = myMenu;
+			}
+			private function itemClick_pieceNum(e:MenuEvent):void{
+				pieceNum.label = e.label;
+				//Alert.show(e.index.toString())
+				if(e.index == 0)
+				{
+					m_boardNum = 8;
+					m_picFrontWidth = 801;
+					m_picFrontHeight = 401;
+					m_picBackWidth = 601;
+					m_picBackHeight = 601;
+				}
+				else
+				{
+					m_boardNum = 12;
+					m_picFrontWidth = 1201;
+					m_picFrontHeight = 401;
+					m_picBackWidth = 801;
+					m_picBackHeight = 801;
+				}
+				
+				setDefaultCrop();
+			}
+			
+			private var front_back_list:Object = [{label:"正面"},{label:"背面"}];
+			private function initPopFrontBack():void{
+				var myMenu:Menu = new Menu();
+				myMenu.dataProvider = front_back_list;
+				myMenu.selectedIndex = 0;
+				myMenu.addEventListener(MenuEvent.ITEM_CLICK,itemClick_frontBack);
+				frontBack.popUp = myMenu;
+			}
+			private function itemClick_frontBack(e:MenuEvent):void{
+				frontBack.label = e.label;
+				//if(mySource.source == null) return;
+				
+				m_croping = true;
+				if(e.index == 0)
+				{
+					m_cropFront = true;
+				}
+				else
+				{
+					m_cropFront = false;
+				}
+				
+				setDefaultCrop();
+			}
+			
+			
+			private function drawCropRect():void{
+											
+				myRuler.graphics.clear();
+				
+				//画外轮廓
+				var myDashLine:MyDashLine = new MyDashLine(); 
+				for(var i:int = 0; i<4; i++)
+				{
+					myDashLine.drawDashed(myRuler.graphics, 0x000000, 1, m_vertex[i], m_vertex[(i+1)%4],1,4,4,MyDashLine.DASHLINE, 0xFFFFFF);
+				}
+				
+				//画内分割线
+				
+				if (m_cropFront)
+				{
+					var colBoradNum:Number = 2 * m_cropRatio;
+					//var colBoradNum:Number = 2 * 2;
+					
+					var perX:Number = (m_vertex[1].x - m_vertex[0].x)/colBoradNum;
+					var perY:Number = (m_vertex[1].y - m_vertex[0].y)/colBoradNum;
+					
+					//int perDist = (m_cropBR.y - m_cropTL.y) / 2;
+					for (var col:int=1;col<colBoradNum; col++)
+					{
+						myRuler.graphics.lineStyle(1, 0x808080); 
+						myRuler.graphics.moveTo(m_vertex[0].x + col * perX, m_vertex[0].y + col * perY);
+						myRuler.graphics.lineTo(m_vertex[3].x + col * perX, m_vertex[3].y + col * perY);
+					}
+					
+					perX = (m_vertex[3].x - m_vertex[0].x)/2;
+					perY = (m_vertex[3].y - m_vertex[0].y)/2;
+					myRuler.graphics.moveTo(m_vertex[0].x + perX, m_vertex[0].y + perY);
+					myRuler.graphics.lineTo(m_vertex[1].x + perX, m_vertex[1].y + perY);
+				}
+				else
+				{
+					//小板的列数
+					var colNum:int = m_picBackHeight/200;
+					
+					perX = (m_vertex[1].x - m_vertex[0].x)/colNum;
+					perY = (m_vertex[1].y - m_vertex[0].y)/colNum;
+					
+					
+					for (col=1; col<colNum; col++)
+					{
+						myRuler.graphics.lineStyle(1, 0x808080); 
+						myRuler.graphics.moveTo(m_vertex[0].x + col * perX, m_vertex[0].y + col * perY);
+						myRuler.graphics.lineTo(m_vertex[3].x + col * perX, m_vertex[3].y + col * perY);
+					}
+					
+					var perX1:int = (m_vertex[3].x - m_vertex[0].x)/colNum;
+					var perY1:int = (m_vertex[3].y - m_vertex[0].y)/colNum;
+					
+					for (col = 1; col<colNum; col++)
+					{
+						myRuler.graphics.lineStyle(1, 0x808080); 
+						myRuler.graphics.moveTo(m_vertex[0].x + col * perX1, m_vertex[0].y + col * perY1);
+						myRuler.graphics.lineTo(m_vertex[1].x + col * perX1, m_vertex[1].y + col * perY1);
+					}
+					
+					//画无效区域
+					if (m_boardNum == 8)
+					{ 
+						myRuler.graphics.lineStyle(1, 0xFF0000);  
+						myRuler.graphics.moveTo(m_vertex[0].x + perX, m_vertex[0].y + perY);
+						myRuler.graphics.lineTo(m_vertex[0].x + perX1, m_vertex[0].y + perY1);
+						myRuler.graphics.moveTo(m_vertex[0].x, m_vertex[0].y);
+						myRuler.graphics.lineTo(m_vertex[0].x + perX + perX1, m_vertex[0].y + perY + perY1);
+					}
+					if (m_boardNum == 12)
+					{
+						myRuler.graphics.lineStyle(1, 0xFF0000);
+						
+						var invalidBlock:Array =new Array(new Array(0,2), new Array(0,3), new Array(1,3), new Array(3,0));
+						
+						for (i=0; i<4; i++)
+						{
+							var vx:int = m_vertex[0].x + perX * invalidBlock[i][1] + perX1 * invalidBlock[i][0];
+							var vy:int = m_vertex[0].y + perY * invalidBlock[i][1] + perY1 * invalidBlock[i][0];
+							myRuler.graphics.moveTo(vx + perX, vy + perY);
+							myRuler.graphics.lineTo(vx + perX1, vy + perY1);
+							myRuler.graphics.moveTo(vx, vy);
+							myRuler.graphics.lineTo(vx + perX + perX1, vy + perY + perY1);
+						}		
+					}	
+				}
+				
+				//画拖动点
+				var dragVertexOut:Array = new Array(), dragVertexIn:Array = new Array();
+				for (i=0; i<4; i++)
+				{
+					dragVertexOut[i] = new Point();
+					dragVertexIn[i] = new Point();
+				}
+				var dragRadiusOut:Number = m_posDragRadius, dragRadiusIn:Number = m_posDragRadius-1;
+				dragVertexOut[0].x = int(m_cosTheta * (-1 * dragRadiusOut) - m_sinTheta * (-1 * dragRadiusOut) + m_vertex[2].x + 0.5);
+				dragVertexOut[0].y = int(m_sinTheta * (-1 * dragRadiusOut) + m_cosTheta * (-1 * dragRadiusOut) + m_vertex[2].y + 0.5);
+				dragVertexOut[1].x = int(m_cosTheta * (dragRadiusOut) - m_sinTheta * (-1 * dragRadiusOut) + m_vertex[2].x + 0.5);
+				dragVertexOut[1].y = int(m_sinTheta * (dragRadiusOut) + m_cosTheta * (-1 * dragRadiusOut) + m_vertex[2].y + 0.5);
+				dragVertexOut[2].x = int(m_cosTheta * (dragRadiusOut) - m_sinTheta * (dragRadiusOut) + m_vertex[2].x + 0.5);
+				dragVertexOut[2].y = int(m_sinTheta * (dragRadiusOut) + m_cosTheta * (dragRadiusOut) + m_vertex[2].y + 0.5);
+				dragVertexOut[3].x = int(m_cosTheta * (-1 * dragRadiusOut) - m_sinTheta * (dragRadiusOut) + m_vertex[2].x + 0.5);
+				dragVertexOut[3].y = int(m_sinTheta * (-1 * dragRadiusOut) + m_cosTheta * (dragRadiusOut) + m_vertex[2].y + 0.5);
+				
+				dragVertexIn[0].x = int(m_cosTheta * (-1 * dragRadiusIn) - m_sinTheta * (-1 * dragRadiusIn) + m_vertex[2].x + 0.5);
+				dragVertexIn[0].y = int(m_sinTheta * (-1 * dragRadiusIn) + m_cosTheta * (-1 * dragRadiusIn) + m_vertex[2].y + 0.5);
+				dragVertexIn[1].x = int(m_cosTheta * (dragRadiusIn) - m_sinTheta * (-1 * dragRadiusIn) + m_vertex[2].x + 0.5);
+				dragVertexIn[1].y = int(m_sinTheta * (dragRadiusIn) + m_cosTheta * (-1 * dragRadiusIn) + m_vertex[2].y + 0.5);
+				dragVertexIn[2].x = int(m_cosTheta * (dragRadiusIn) - m_sinTheta * (dragRadiusIn) + m_vertex[2].x + 0.5);
+				dragVertexIn[2].y = int(m_sinTheta * (dragRadiusIn) + m_cosTheta * (dragRadiusIn) + m_vertex[2].y + 0.5);
+				dragVertexIn[3].x = int(m_cosTheta * (-1 * dragRadiusIn) - m_sinTheta * (dragRadiusIn) + m_vertex[2].x + 0.5);
+				dragVertexIn[3].y = int(m_sinTheta * (-1 * dragRadiusIn) + m_cosTheta * (dragRadiusIn) + m_vertex[2].y + 0.5);
+				
+				myRuler.graphics.lineStyle(1, 0x808080); 
+				for (i=0; i<4; i++)
+				{
+					myRuler.graphics.moveTo(dragVertexOut[i].x, dragVertexOut[i].y);
+					myRuler.graphics.lineTo(dragVertexOut[(i+1)%4].x, dragVertexOut[(i+1)%4].y);
+				} 
+				
+				
+				myRuler.graphics.drawCircle(m_vertex[1].x, m_vertex[1].y, m_angleDragRadius);
+				
+				
+				myRuler.graphics.lineStyle(1, 0xFFFFFF); 
+				for (i=0; i<4; i++)
+				{
+					myRuler.graphics.moveTo(dragVertexIn[i].x, dragVertexIn[i].y);
+					myRuler.graphics.lineTo(dragVertexIn[(i+1)%4].x, dragVertexIn[(i+1)%4].y);
+				} 
+				
+				
+				myRuler.graphics.drawCircle(m_vertex[1].x, m_vertex[1].y, m_angleDragRadius-1);
+				
+		
+
+			}
+			
+			private function initCropParam():void{
+				m_croping = true;
+				
+				var drawRectWidth:int = mySource.width;
+				//Alert.show("drawRectWidth"+ drawRectWidth);
+				var drawRectHeight:int = mySource.height;
+				
+				var ratio:Number;
+				ratio = m_imgWidth/m_imgHeight;
+				if ( ratio > drawRectWidth/drawRectHeight)
+				{
+					m_drawWidth = drawRectWidth;
+					m_drawHeight = Math.round(m_drawWidth / ratio); 
+					m_drawPosX = mySource.x - 1;
+					m_drawPosY =  Math.round((drawRectHeight - m_drawHeight)/2) + mySource.y - 1;
+				}
+				else
+				{
+					m_drawHeight = drawRectHeight;
+					m_drawWidth =  Math.round(m_drawHeight * ratio);
+					m_drawPosX =  Math.round((drawRectWidth - m_drawWidth)/2) + mySource.x - 1;
+					m_drawPosY = mySource.y - 1;
+				}
+				
+				m_vertex[0] = new Point();
+				m_vertex[1] = new Point();
+				m_vertex[2] = new Point();
+				m_vertex[3] = new Point();
+				
+				setDefaultCrop();
+			}
+			
+			private function setDefaultCrop():void{
+				//根据板数，设置宽高比
+				if(m_cropFront)
+				{
+					switch (m_boardNum)
+					{
+						case 8: m_cropRatio = 2;break;
+						case 12: m_cropRatio = 3;break;
+						default:break;
+					}
+				}
+				else
+				{
+					m_cropRatio = 1;
+				}
+				
+				var ratio:Number = m_drawWidth/m_drawHeight;
+				var cropWidth:int,cropHeight:int;
+				
+				if (ratio>m_cropRatio)
+				{
+					cropHeight = m_drawHeight;
+					cropWidth = cropHeight * m_cropRatio;
+				}
+				else
+				{
+					cropWidth = m_drawWidth;
+					cropHeight = cropWidth / m_cropRatio;
+				}
+				
+				m_cropCenter.x = m_drawWidth / 2 + m_drawPosX;
+				m_cropCenter.y = m_drawHeight / 2 + m_drawPosY;
+				m_cropRadius = cropWidth / 2;
+				m_cropAngle = PI / 180 * 0;
+				
+				UpdateVertex();
+			}
+			
+			private function UpdateVertex():void{
+				var theta:Number = m_cropAngle;
+				m_cosTheta = Math.cos( theta );
+				m_sinTheta = Math.sin( theta );
+				
+				var radiusX:Number = m_cropRadius;
+				var radiusY:Number = m_cropRadius / m_cropRatio;
+				
+				//计算顶点坐标 x = cos(Sita)x' - sin(Sita)y'; y = sin(Sita)x' + cos(Sita)y';
+				m_vertex[0].x = int(m_cosTheta * (-1 * radiusX) - m_sinTheta * (-1 * radiusY) + m_cropCenter.x);
+				m_vertex[0].y = int(m_sinTheta * (-1 * radiusX) + m_cosTheta * (-1 * radiusY) + m_cropCenter.y);
+				m_vertex[1].x = int(m_cosTheta * (radiusX) - m_sinTheta * (-1 * radiusY) + m_cropCenter.x);
+				m_vertex[1].y = int(m_sinTheta * (radiusX) + m_cosTheta * (-1 * radiusY) + m_cropCenter.y);
+				m_vertex[2].x = int(m_cosTheta * (radiusX) - m_sinTheta * (radiusY) + m_cropCenter.x);
+				m_vertex[2].y = int(m_sinTheta * (radiusX) + m_cosTheta * (radiusY) + m_cropCenter.y);
+				m_vertex[3].x = int(m_cosTheta * (-1 * radiusX) - m_sinTheta * (radiusY) + m_cropCenter.x);
+				m_vertex[3].y = int(m_sinTheta * (-1 * radiusX) + m_cosTheta * (radiusY) + m_cropCenter.y);
+				//Alert.show("loader.content.width=");
+				//set editAngle text by cropAngle
+				setEditAngle()
+				
+				drawCropRect();
+			}
+			
+			[Embed(source = 'DRAG.png')]
+			private var dragCursor:Class;
+			[Embed(source = 'ANGLE.png')]
+			private var angleCursor:Class;
+			[Embed(source = 'NESW.png')]
+			private var neswCursor:Class;
+			[Embed(source = 'NWSE.png')]
+			private var nwseCursor:Class;
+			[Embed(source = 'NS.png')]
+			private var nsCursor:Class;
+			[Embed(source = 'WE.png')]
+			private var weCursor:Class;
+			
+			private function onMouseMove(event:MouseEvent):void{
+				var point:Point = new Point(event.localX, event.localY)
+				if(!m_cursorDrag)
+				{
+					CursorManager.removeAllCursors();
+					m_cursorStatus = CURSOR_FREE;
+				
+					if (isInCrop(point))
+					{
+						CursorManager.setCursor(dragCursor,2,-15,-15);
+						m_cursorStatus = CURSOR_DRAG;
+					}
+					
+					if (isCropResizeDrag(point))
+					{
+						var angle:Number = m_cropAngle - PI/8;
+						if ( Math.tan(-PI/2)<=Math.tan(angle)&&Math.tan(angle)<Math.tan(-PI/4) )
+						{
+							CursorManager.setCursor(weCursor,2,-15,-15);
+						}
+						if ( Math.tan(-PI/4)<=Math.tan(angle)&&Math.tan(angle)<Math.tan(0.0) )
+						{
+							CursorManager.setCursor(nwseCursor,2,-15,-15);
+						}
+						if ( Math.tan(0.0)<=Math.tan(angle)&&Math.tan(angle)<Math.tan(PI/4) )
+						{
+							CursorManager.setCursor(nsCursor,2,-15,-15);
+						}
+						if ( Math.tan(PI/4)<=Math.tan(angle)&&Math.tan(angle)<Math.tan(PI/2) )
+						{
+							CursorManager.setCursor(neswCursor,2,-15,-15);
+						}
+						
+						m_cursorStatus = CURSOR_RESIZE;
+					}
+					
+					if (isCropAngleDrag(point))
+					{
+						CursorManager.setCursor(angleCursor,2,-15,-15);
+						m_cursorStatus = CURSOR_ANGLE;
+					}
+				}
+				else
+				{
+					if(m_cursorStatus == CURSOR_DRAG)
+					{
+						m_cropDraging = true;
+						
+						m_cropCenter.x = m_lastCenter.x + point.x - m_lastPoint.x;
+						m_cropCenter.y = m_lastCenter.y + point.y - m_lastPoint.y;
+						//edit.text = m_lastCenter.x.toString();
+					}
+					
+					if(m_cursorStatus == CURSOR_RESIZE)
+					{
+						m_cropResizing = true;
+						
+						var lastDist:Number = Math.sqrt((m_vertex[0].x - m_lastPoint.x)*(m_vertex[0].x - m_lastPoint.x)
+							+ (m_vertex[0].y - m_lastPoint.y)*(m_vertex[0].y - m_lastPoint.y));
+						
+						var curDist:Number = Math.sqrt((m_vertex[0].x - point.x)*(m_vertex[0].x - point.x)
+							+ (m_vertex[0].y - point.y)*(m_vertex[0].y - point.y));
+						
+						m_cropRadius = curDist / lastDist * m_lastRadius;
+						
+						var theta:Number = m_cropAngle;
+						m_cosTheta = Math.cos( theta );
+						m_sinTheta = Math.sin( theta );
+						
+						var radiusX:Number = m_cropRadius;
+						var radiusY:Number = m_cropRadius / m_cropRatio;
+						
+						var oldVertex0:Point = new Point();
+						oldVertex0.x = m_vertex[0].x;
+						oldVertex0.y = m_vertex[0].y;
+						m_vertex[0].x = int(m_cosTheta * (-radiusX) - m_sinTheta * (-radiusY) + m_cropCenter.x);
+						m_vertex[0].y = int(m_sinTheta * (-radiusX) + m_cosTheta * (-radiusY) + m_cropCenter.y);
+						
+						m_cropCenter.x = m_cropCenter.x + oldVertex0.x - m_vertex[0].x;	
+						m_cropCenter.y = m_cropCenter.y + oldVertex0.y - m_vertex[0].y;	
+
+					}
+					
+					if(m_cursorStatus == CURSOR_ANGLE)
+					{
+						m_cropAngling = true;
+						
+						var lastAngle:Number = Math.atan( (m_lastPoint.y - m_cropCenter.y)/(m_lastPoint.x - m_cropCenter.x));
+						if(m_lastPoint.x - m_cropCenter.x<0) lastAngle += PI;
+						
+						var curAngle:Number = Math.atan( (point.y - m_cropCenter.y)/(point.x - m_cropCenter.x));
+						if(point.x - m_cropCenter.x<0) curAngle += PI;
+						
+						m_cropAngle = m_lastAngle + curAngle - lastAngle;
+					}
+					
+					UpdateVertex();
+					
+				}
+			}
+			
+			private function onMouseDown(event:MouseEvent):void{
+							
+				var point:Point = new Point(event.localX, event.localY)
+				if(!m_cursorDrag)
+				{
+					m_cursorDrag = true;
+					
+					m_lastPoint = point;
+					m_lastCenter.x = m_cropCenter.x;
+					m_lastCenter.y = m_cropCenter.y;
+					m_lastRadius = m_cropRadius;
+					m_lastAngle = m_cropAngle;
+				}
+			}
+			
+			private function onMouseUp(event:MouseEvent):void{
+				m_cursorDrag = false;
+				
+				m_cropResizing = false;
+				m_cropDraging = false;
+				m_cropAngling = false;
+			}
+			
+			private function isInCrop(point:Point):Boolean{
+				var oX:Number, oY:Number;
+				oX = m_cosTheta * (point.x - m_cropCenter.x) + m_sinTheta * (point.y - m_cropCenter.y);
+				oY = -m_sinTheta * (point.x - m_cropCenter.x) + m_cosTheta * (point.y - m_cropCenter.y);
+				
+				if (!m_cropAngling && !m_cropResizing && Math.abs(oX) <= m_cropRadius - 5 && Math.abs(oY) <= m_cropRadius / m_cropRatio  - 5 )
+				{
+					return true;
+				}
+				
+				return false;
+			}
+			
+			private function isCropResizeDrag(point:Point):Boolean{
+				var oX:Number, oY:Number;
+				oX = m_cosTheta * (point.x - m_vertex[2].x) + m_sinTheta * (point.y - m_vertex[2].y);
+				oY = -m_sinTheta * (point.x - m_vertex[2].x) + m_cosTheta * (point.y - m_vertex[2].y);
+				
+				if (!m_cropAngling && !m_cropDraging &&  Math.abs(oX) <= m_posDragRadius && Math.abs(oY) <= m_posDragRadius )
+				{
+					return true;
+				}
+				
+				return false;
+			}
+			
+			private function isCropAngleDrag(point:Point):Boolean{
+				if (
+					!m_cropDraging && !m_cropResizing && 
+					point.x>=m_vertex[1].x-m_angleDragRadius&&
+					point.y<=m_vertex[1].y+m_angleDragRadius&&
+					point.x<=m_vertex[1].x+m_angleDragRadius&&
+					point.y>=m_vertex[1].y-m_angleDragRadius
+				)
+				{
+					return true;
+				}
+				
+				return false;
+			}
+			
+			private function setCropAngle():void{
+				var angle:Number = Number(editAngle.text);
+				editAngle.text = angle.toString();
+				m_cropAngle = angle / 180 * PI;
+				UpdateVertex();
+			}
+			
+			private function setEditAngle():void{
+				var angle:Number = m_cropAngle / PI * 180;
+				angle = Number(Math.round(angle * 10)) /10;
+				
+				editAngle.text = angle.toString();/**/
+			}
+			
+			private function wantSaveResult():void{
+				if (m_croping)
+				{
+					if (isOutOfRange())
+					{
+
+						Alert.show("所选择的区域超出图像范围，是否继续？","提示", Alert.OK|Alert.CANCEL, null,function(e:CloseEvent):void{
+							if(e.detail == Alert.OK)
+							{
+								saveResult();
+							}
+						});
+						return;
+					}
+				}
+				
+				saveResult();
+			}
+			
+			private function isShareResult():void{
+				Alert.show("确定上传图片？","提示", Alert.OK|Alert.CANCEL, null,function(e:CloseEvent):void{
+					if(e.detail == Alert.OK)
+					{
+						shareResult();
+					}
+					return;
+				});
+				
+			}
+			
+			private function shareResult():void{
+				var randStr:String = getRandomStr();
+				
+				
+				//var tmp:previewDlg = previewDlg(PopUpManager.createPopUp(this.parent, previewDlg, true));
+				m_progDlg = progressDlg(PopUpManager.createPopUp(this, progressDlg, true));
+				
+				//tmp.addEventListener(Event.REMOVED,saveCompleteHandler);
+				m_progDlg.shareProgress.setProgress(0, 100);
+				m_progDlg.shareProgress.label = "上传进度："+m_progDlg.shareProgress.value+"%";
+				PopUpManager.centerPopUp(m_progDlg);
+				
+				m_timer.addEventListener(TimerEvent.TIMER, onTimer);
+				m_timer.start();
+				//shareProgress.setProgress(shareProgress.value + 25, 100);
+				//Alert.show(randStr);
+				shareByName(randStr+"frontPre", m_frontPrePic);
+				shareByName(randStr+"frontPrint", m_frontPrintPic);
+				shareByName(randStr+"backPre", m_backPrePic);
+				shareByName(randStr+"backPrint", m_backPrintPic);
+				
+				//传给sharepic，用于标记当前版子数目，用于显示图片
+				var num:int = 0;
+				if(m_boardNum == 12)
+						num = 1;
+				
+				m_request = new URLRequest("share.php?id="+randStr+"&n="+num);
+			}
+			
+			private function onTimer(event:TimerEvent):void{
+				var tmp:Number = m_progDlg.shareProgress.value;
+				if((tmp + 1) % 25 != 0 )
+				{
+					m_progDlg.shareProgress.setProgress(m_progDlg.shareProgress.value + 1, 100);
+					m_progDlg.shareProgress.label = "上传进度："+m_progDlg.shareProgress.value+"%";
+				}
+			}
+			
+			private function getRandomStr():String{
+				var str:String = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				var index:Number;
+				var randStr:String = "";
+				
+				for(var i:int=0; i<10; i++) 
+				{
+					index = Math.round(Math.random() * 36); 
+					randStr = randStr + str.charAt(index);
+				}
+				
+				var myDateFormatter:DateFormatter=new DateFormatter();
+				myDateFormatter.formatString="YYYYMMDDJJNNSS";
+								
+				return myDateFormatter.format(new Date()) + randStr;
+			}
+			
+			private function shareByName(name:String, data:ByteArray):void{
+				//图片二进制数据
+				//var en:JPEGEncoder = new JPEGEncoder(100); //压缩图片，100是指质量
+				//var byteArray:ByteArray = en.encode(data);
+				//var byteArray:ByteArray = null;
+				
+				//后台PHP文件路径
+				var request:URLRequest = new URLRequest("savePic.php?name="+name);
+				
+				//加载器
+				var loader:URLLoader = new URLLoader();
+				//loader.dataFormat = URLLoaderDataFormat.TEXT;
+				//configureListeners(loader);
+				var file:FileReference = new FileReference(); 
+				
+				request.data = data;
+				request.method = flash.net.URLRequestMethod.POST;
+				request.contentType = "application/octet-stream";
+				
+								
+				loader.addEventListener(Event.COMPLETE, shareCompleteHandle);
+				//loader.addEventListener(ProgressEvent.PROGRESS, shareProgressHandle);
+				//file.addEventListener(ProgressEvent.PROGRESS, shareProgressHandle);
+				//Alert.show("sdfdsf1");
+				loader.load(request);
+				
+				//Alert.show("sdfdsf");
+				
+			}
+			
+			private function configureListeners(dispatcher:IEventDispatcher):void {
+				dispatcher.addEventListener(Event.COMPLETE, shareCompleteHandle);
+				dispatcher.addEventListener(Event.OPEN, openHandler);
+				dispatcher.addEventListener(ProgressEvent.PROGRESS, shareProgressHandle);
+				dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+				dispatcher.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+				dispatcher.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+			}
+					
+			private function shareCompleteHandle(event:Event):void{
+				var tmp:Number = m_progDlg.shareProgress.value;
+				tmp = Math.floor(tmp/25)*25 + 25;
+				m_progDlg.shareProgress.setProgress(tmp, 100);
+				m_progDlg.shareProgress.label = "上传进度："+m_progDlg.shareProgress.value+"%";
+				//Alert.show("load ok");
+				if(m_progDlg.shareProgress.value >= 100)
+				{
+					PopUpManager.removePopUp(m_progDlg);
+					m_timer.stop();
+					Alert.show("上传成功，现在去分享？","提示", Alert.OK|Alert.CANCEL, null,function(e:CloseEvent):void{
+						if(e.detail == Alert.OK)
+						{
+							navigateToURL(m_request, "_blank");	
+						}
+					});		
+					
+				}
+				//Alert.show(shareProgress.value.toString());
+			}	
+			
+			private function shareProgressHandle(e:ProgressEvent):void{
+				Alert.show("progress load");
+				//Alert.show(e.bytesLoaded.toString());
+				//m_progDlg.shareProgress.setProgress(e.bytesLoaded / e.bytesTotal * 100 , 100);
+				//m_progDlg.shareProgress.label = "上传进度："+m_progDlg.shareProgress.value+"%";
+			}
+			
+			private function openHandler(event:Event):void {
+				trace("openHandler: " + event);
+			}
+			
+			private function securityErrorHandler(event:SecurityErrorEvent):void {
+				trace("securityErrorHandler: " + event);
+			}
+			
+			private function httpStatusHandler(event:HTTPStatusEvent):void {
+				trace("httpStatusHandler: " + event);
+			}
+			
+			private function ioErrorHandler(event:IOErrorEvent):void {
+				trace("ioErrorHandler: " + event);
+			}
+			private function saveResult():void{
+								
+				generatePicture();
+				//AjustSavePic(); //调整打印图
+			
+				CursorManager.removeAllCursors();
+				
+				var tmp:previewDlg = previewDlg(PopUpManager.createPopUp(this, previewDlg, true));
+				
+				//创建Bitmap对象 
+				var bmpImage:Bitmap = new Bitmap(m_prePic); 
+				//var bmpImage:Bitmap = new Bitmap(m_bitmapData); 
+				
+				bmpImage.smoothing = true;
+				bmpImage.pixelSnapping = PixelSnapping.ALWAYS;
+				//创建一个UIComponent对象 
+				var uic:UIComponent = new UIComponent(); 
+				//将Bitmap对象加入到UIComponent对象中 
+				uic.addChild(bmpImage); 
+				
+				
+				var tempMatrix:Matrix = uic.transform.matrix;
+				var scale:Number;
+				var transX:Number, transY:Number;;
+				if(m_prePic.width / m_prePic.height > tmp.preImage.width / tmp.preImage.height)
+				{
+					scale = (tmp.preImage.width-6)/m_prePic.width;
+					transX = 3;
+					transY = (tmp.preImage.height -m_prePic.height * scale)/2;
+				}
+				else 
+				{
+					scale = (tmp.preImage.height-6)/m_prePic.height;
+					transX = (tmp.preImage.width - m_prePic.width * scale)/2;
+					transY = 3;
+				}
+				
+				tempMatrix.scale(scale, scale);
+				tempMatrix.translate(transX, transY);
+				
+				
+				uic.transform.matrix = tempMatrix;
+				//将UIComponent对象加入Canvas中 
+				tmp.preImage.addChild(uic); 
+				tmp.printPicData = m_printPic;
+				tmp.prePicData = m_prePic;
+				tmp.fileName = pieceNum.label + frontBack.label;
+				tmp.title = tmp.fileName + "-预览";
+				
+				tmp.addEventListener(Event.REMOVED,saveCompleteHandler);
+				PopUpManager.centerPopUp(tmp);
+			}
+			
+			private function saveCompleteHandler(event:Event):void{
+				if(m_isSaveOK)
+				{
+					var en:JPEGEncoder = new JPEGEncoder(100); //压缩图片，100是指质量
+
+					if(m_cropFront)
+					{
+						frontPrint.smooth = true;
+						frontPrint.source = m_prePic;
+						
+						m_frontPrintPic = en.encode(m_printPic);
+						m_frontPrePic = en.encode(m_prePic);
+					}
+					else
+					{
+						backPrint.smooth = true;
+						backPrint.source = m_prePic;
+					
+						m_backPrintPic = en.encode(m_printPic);
+						m_backPrePic = en.encode(m_prePic);
+						
+					}
+				}
+			}
+			
+			private function isOutOfRange():Boolean{
+				if (m_cropFront)
+				{
+					for (var i:int=0; i<4; i++)
+					{
+						if (
+							m_vertex[i].x<m_drawPosX || m_vertex[i].x>m_drawPosX + m_drawWidth ||
+							m_vertex[i].y<m_drawPosY || m_vertex[i].y>m_drawPosY + m_drawHeight
+						)
+						{
+							return true;
+						}
+					}
+				}
+				else
+				{
+					var dX1:int = (m_vertex[1].x - m_vertex[0].x) / 3;
+					var dY1:int = (m_vertex[1].y - m_vertex[0].y) / 3 ;
+					var dX2:int = (m_vertex[3].x - m_vertex[0].x) / 3;
+					var dY2:int = (m_vertex[3].y - m_vertex[0].y) / 3 ;
+					var tPoint:Array;
+					
+					if (m_boardNum == 8)
+					{
+						for (i=1; i<4; i++)
+						{
+							if (
+								m_vertex[i].x<m_drawPosX || m_vertex[i].x>m_drawPosX + m_drawWidth ||
+								m_vertex[i].y<m_drawPosY || m_vertex[i].y>m_drawPosY + m_drawHeight
+							)
+							{
+								return true;
+							}
+						}
+						dX1 = (m_vertex[1].x - m_vertex[0].x) / 3;
+						dY1 = (m_vertex[1].y - m_vertex[0].y) / 3 ;
+						dX2 = (m_vertex[3].x - m_vertex[0].x) / 3;
+						dY2 = (m_vertex[3].y - m_vertex[0].y) / 3 ;
+					
+						tPoint = new Array(new Point(), new Point());
+						tPoint[0].x = m_vertex[0].x + dX1;
+						tPoint[0].y = m_vertex[0].y + dY1;
+						tPoint[1].x = m_vertex[0].x + dX2;
+						tPoint[1].y = m_vertex[0].y + dY2;
+						
+						
+						for (i=0; i<2; i++)
+						{
+							if (
+								tPoint[i].x<m_drawPosX || tPoint[i].x>m_drawPosX + m_drawWidth ||
+								tPoint[i].y<m_drawPosY || tPoint[i].y>m_drawPosY + m_drawHeight
+							)
+							{
+								return true;
+							}
+						}
+					}
+					
+					if (m_boardNum == 12)
+					{
+						for (i=1; i<4; i++)
+						{
+							if (i!=2 &&
+								(m_vertex[i].x<m_drawPosX || m_vertex[i].x>m_drawPosX + m_drawWidth ||
+									m_vertex[i].y<m_drawPosY || m_vertex[i].y>m_drawPosY + m_drawHeight)
+							)
+							{
+								return true;
+							}
+						}
+						dX1 = (m_vertex[1].x - m_vertex[0].x) / 4;
+						dY1 = (m_vertex[1].y - m_vertex[0].y) / 4;
+						dX2 = (m_vertex[3].x - m_vertex[0].x) / 4;
+						dY2 = (m_vertex[3].y - m_vertex[0].y) / 4;
+						
+						tPoint = new Array(new Point(), new Point(), new Point(), new Point());
+						tPoint[0].x = m_vertex[0].x + 2 * dX1;
+						tPoint[0].y = m_vertex[0].y + 2 * dY1;
+						tPoint[1].x = m_vertex[0].x + 2 * dX1 + 2 * dX2;
+						tPoint[1].y = m_vertex[0].y + 2 * dY1 + 2 * dY2;
+						tPoint[2].x = m_vertex[0].x + 3 * dX2;
+						tPoint[2].y = m_vertex[0].y + 3 * dY2;
+						tPoint[3].x = m_vertex[0].x + dX1 + 4 * dX2;
+						tPoint[3].y = m_vertex[0].y + dX2 + 4 * dY2;
+						
+						
+						
+						for (i=0; i<4; i++)
+						{
+							if (
+								tPoint[i].x<m_drawPosX || tPoint[i].x>m_drawPosX + m_drawWidth ||
+								tPoint[i].y<m_drawPosY || tPoint[i].y>m_drawPosY + m_drawHeight
+							)
+							{
+								return true;
+							}
+						}
+					}
+					
+				}
+				
+				return false;
+			}
+			
+			private function generatePicture():void{
+				var cropPic:BitmapData = getCropPic();
+				
+				if(m_cropFront)
+					m_prePic = new BitmapData(m_picFrontWidth, m_picFrontHeight);
+				else
+					m_prePic = new BitmapData(m_picBackWidth, m_picBackHeight);
+				//生成预览图片像
+				if (m_prePic != null)
+				{		
+					//return pCropPic;
+					
+					var sprite:Sprite = new Sprite();
+					
+					//拷贝图片
+					m_prePic.draw(cropPic);
+										
+					//画分割线
+					sprite.graphics.lineStyle(1, 0x000000); 
+					
+					var perDist:int = 200;
+					var colNum:int = m_prePic.width / BLOCKSIZE;
+					var rowNum:int = m_prePic.height / BLOCKSIZE;
+					
+					for(var col:int=0; col<colNum + 1; col++)
+					{
+						sprite.graphics.moveTo(col* BLOCKSIZE, 0);
+						sprite.graphics.lineTo(col* BLOCKSIZE, m_prePic.height);
+					}	
+					
+					for(var row:int=0; row<rowNum + 1; row++)
+					{
+						sprite.graphics.moveTo(0, row * BLOCKSIZE);
+						sprite.graphics.lineTo(m_prePic.width -1, row * BLOCKSIZE);
+					}	
+					
+					//若是背面，需要画无效区域
+					if (!m_cropFront)
+					{
+						if (m_boardNum == 8)
+						{ 				
+							sprite.graphics.beginFill(0x808080);
+							sprite.graphics.drawRect(0, 0, BLOCKSIZE, BLOCKSIZE);
+						}
+						if (m_boardNum == 12)
+						{
+							//sprite.graphics.lineStyle(2, 0xFF0000);
+							sprite.graphics.beginFill(0x808080);
+							
+							var invalidBlock:Array =new Array(new Array(0,2), new Array(0,3), new Array(1,3), new Array(3,0));
+							
+							for (var i:int=0; i<4; i++)
+							{	
+								var vx:int = BLOCKSIZE * invalidBlock[i][1];
+								var vy:int = BLOCKSIZE * invalidBlock[i][0];
+								
+								sprite.graphics.drawRect(vx, vy, BLOCKSIZE, BLOCKSIZE);
+								
+							}		
+						}	
+					}
+					
+					m_prePic.draw(sprite,null,null,null,null,true);
+					
+				}
+				
+				m_printPic = new BitmapData(m_picFrontWidth + 40, m_picFrontHeight);
+	
+				//生成打印图片像
+				if (m_printPic != null)
+				{		
+					var finalPicWidth:int = m_picFrontWidth + 40;
+					
+					//拷贝图片
+					//若是背面，需要调整块位置
+					if (m_cropFront)
+						m_printPic.draw(cropPic, new Matrix(1,0,0,1,40,0));	
+					else
+						adjustBackPic(cropPic);
+					
+					if (m_boardNum == 12)
+					{
+						adjustPrintStyle();
+					}
+						
+					//return pCropPic;
+					
+					sprite = new Sprite();
+		
+					//画白色区域和标记线
+					sprite.graphics.lineStyle(3, 0x000000); 
+									
+					var crossPosX:int = 20, crossPosY:int = 20;
+					if(!m_cropFront)
+						if(m_boardNum == 8)
+							crossPosX = m_picFrontWidth + crossPosX;
+						else
+							crossPosX = m_picFrontWidth/2 + crossPosX;
+					var crossSize:int = 5;
+					
+					sprite.graphics.moveTo(crossPosX - 5, crossPosY);
+					sprite.graphics.lineTo(crossPosX + 5, crossPosY);
+					sprite.graphics.moveTo(crossPosX, crossPosY - 5);
+					sprite.graphics.lineTo(crossPosX, crossPosY + 5);
+					
+					//画分割线
+					sprite.graphics.lineStyle(1, 0x000000); 
+					var offsetX:int = 40;
+					if(!m_cropFront)
+						offsetX = 0;
+					
+					colNum = m_printPic.width / BLOCKSIZE;
+					rowNum = m_printPic.height / BLOCKSIZE;
+					
+					for(col=0; col<colNum+1; col++)
+					{
+						sprite.graphics.moveTo(offsetX + col* BLOCKSIZE, 0);
+						sprite.graphics.lineTo(offsetX + col* BLOCKSIZE, m_printPic.height);
+					}	
+					
+					for(row=0; row<rowNum+1; row++)
+					{
+						sprite.graphics.moveTo(offsetX, row * BLOCKSIZE);
+						sprite.graphics.lineTo(offsetX + m_printPic.width - 40, row * BLOCKSIZE);
+					}	
+					
+					m_printPic.draw(sprite,null,null,null,null,true);
+					
+					//m_printPic = cropPic;
+					
+				}
+				
+			}
+			
+			private function adjustBackPic(cropPic:BitmapData):void{
+				
+				if(m_boardNum == 8)
+				{
+					//调整方向,1顺时针90°，-1逆时针90°
+					var blockOri:Array = new Array(0,1,1,-1,1,1,-1,-1,1);
+					var blockPos:Array = new Array(-1,4,0,6,5,1,7,3,2);
+					
+					for(var b:int=1; b<9; b++)
+					{
+						//var tmpByte:ByteArray = cropPic.getPixels(new Rectangle((b%3)*BLOCKSIZE, (b/3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE));
+						var tmpPic:BitmapData = new BitmapData(BLOCKSIZE, BLOCKSIZE);
+						//tmpByte.position = 0;
+						tmpPic.copyPixels(cropPic, new Rectangle((b%3)*BLOCKSIZE, Math.floor(b/3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE), new Point(0,0));
+						//tmpPic.setPixels(new Rectangle(0,0,BLOCKSIZE,BLOCKSIZE), tmpByte);
+						var matrix:Matrix = new Matrix();
+						matrix.translate(-1* BLOCKSIZE / 2, -1* BLOCKSIZE / 2);
+						matrix.rotate(blockOri[b] * PI / 2);
+						matrix.translate(BLOCKSIZE / 2, BLOCKSIZE / 2);
+						matrix.translate((blockPos[b] % 4) * BLOCKSIZE ,  Math.floor(blockPos[b] / 4) * BLOCKSIZE);
+						m_printPic.draw(tmpPic, matrix,null,null,null,true);
+					}
+				}
+				else
+				{
+					//调整方向,1顺时针90°，-1逆时针90°
+					blockOri = new Array(1,-1,1,1,1,1,-1,1,1,-1,-1,1,1,-1,-1,1);
+					blockPos = new Array(7,6,-1,-1,8,0,1,-1,9,10,2,3,-1,11,5,4);
+					
+					for(b=0; b<16; b++)
+					{
+						//var tmpByte:ByteArray = cropPic.getPixels(new Rectangle((b%3)*BLOCKSIZE, (b/3)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE));
+						tmpPic = new BitmapData(BLOCKSIZE, BLOCKSIZE);
+						//tmpByte.position = 0;
+						tmpPic.copyPixels(cropPic, new Rectangle((b%4)*BLOCKSIZE, Math.floor(b/4)*BLOCKSIZE, BLOCKSIZE, BLOCKSIZE), new Point(0,0));
+						//tmpPic.setPixels(new Rectangle(0,0,BLOCKSIZE,BLOCKSIZE), tmpByte);
+						matrix = new Matrix();
+						matrix.translate(-1* BLOCKSIZE / 2, -1* BLOCKSIZE / 2);
+						matrix.rotate(blockOri[b] * PI / 2);
+						matrix.translate(BLOCKSIZE / 2, BLOCKSIZE / 2);
+						matrix.translate((blockPos[b] % 6) * BLOCKSIZE ,  Math.floor(blockPos[b] / 6) * BLOCKSIZE);
+						m_printPic.draw(tmpPic, matrix,null,null,null,true);
+					}
+				}
+				
+			}
+			
+			private function adjustPrintStyle():void{
+				if(m_cropFront)
+				{
+					var tmpPic:BitmapData = new BitmapData(41 + m_picFrontWidth / 2, m_picFrontHeight * 2 - 1);
+					tmpPic.draw(m_printPic, new Matrix());
+					tmpPic.copyPixels(m_printPic, new Rectangle(41 + m_picFrontWidth / 2, 0, m_picFrontWidth  / 2, m_picFrontHeight), new Point(41, m_picFrontHeight));
+					m_printPic = tmpPic;
+				}
+				else
+				{
+					tmpPic = new BitmapData(41 + m_picFrontWidth / 2, m_picFrontHeight * 2 - 1);
+					tmpPic.draw(m_printPic, new Matrix(1,0,0,1,-1 * m_picFrontWidth  / 2, 0));
+					tmpPic.copyPixels(m_printPic, new Rectangle(0, 0, m_picFrontWidth  / 2, m_picFrontHeight), new Point(1, m_picFrontHeight));
+					m_printPic = tmpPic;
+				}
+			}			
+		
+			private function getCropPic():BitmapData{
+				var r:Number = (m_bitmapData.width / m_drawWidth + m_bitmapData.height / m_drawHeight) / 2;
+				var picCenter:Point = new Point();
+				var picRadius:Number = m_cropRadius * r;
+				picCenter.x = (m_cropCenter.x - m_drawPosX) * r;
+				picCenter.y = (m_cropCenter.y - m_drawPosY) * r;
+				
+				//var tPic:BitmapData = new BitmapData(m_picFrontWidth, m_picFrontHeight);
+				var tPic:BitmapData = new BitmapData(int(picRadius * 2), int(picRadius * 2 / m_cropRatio));
+				var tWidth:int = tPic.width;
+				var tHeight:int = tPic.height;
+	
+				var cropPic:BitmapData;
+				var matrix:Matrix = new Matrix();
+				var ratio:Number;
+				if (m_cropFront)
+				{
+					//创建A面尺寸图片
+					cropPic = new BitmapData(m_picFrontWidth, m_picFrontHeight);
+					ratio = m_picFrontWidth/tWidth;			
+				}
+				else
+				{
+					//创建B面尺寸图片
+					cropPic = new BitmapData(m_picBackWidth, m_picBackHeight);
+					ratio = m_picBackWidth/tWidth;
+				}
+		
+				//旋转变换
+				matrix.translate(-1*picCenter.x, -1*picCenter.y);
+				matrix.rotate(-1*m_cropAngle);
+				matrix.scale(ratio, ratio);
+				matrix.translate(cropPic.width/2, cropPic.height/2);
+				
+				cropPic.draw(m_bitmapData,matrix,null,null,null,true);
+				
+				return cropPic;
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+	</fx:Declarations>
+		
+	<s:BorderContainer id="sourceFileContainer" x="0" y="0" width="800" height="500" borderWeight="0" backgroundColor="0x808080" doubleClickEnabled="true" doubleClick="wantSaveResult()">
+		<s:layout><s:BasicLayout clipAndEnableScrolling="true"/></s:layout>  
+		<s:Image id="mySource" x="4" y="3" width="792" height="494"/>
+		<s:BorderContainer x="0" y="0" id="myRuler" width="800" height="500" backgroundAlpha="0.0" borderVisible="false">
+			<s:TitleWindow id="preview" x="25" y="54" width="800" height="500" title="预览" visible="false">
+			</s:TitleWindow>
+			
+		</s:BorderContainer>
+	</s:BorderContainer>
+	
+	<s:Button x="10" y="516" label="打开图片" click="sourceFileContainer_clickHandler(event)"/>
+	<s:Button x="370" y="516" label="保存图片" click="wantSaveResult()"/>
+	<s:TextInput id="editAngle" x="307" y="517" width="41" height="20" enter="setCropAngle()" focusOut="setEditAngle()"/>
+	<mx:PopUpButton id="pieceNum" x="104" y="516" width="66" label="8板" creationComplete="initPopPieceNum()" />
+	<mx:PopUpButton id="frontBack" x="195" y="516" width="66" label="正面" creationComplete="initPopFrontBack()"/>
+	<s:Label x="354" y="521" fontSize="14" text="°"/>
+	<s:Label x="279" y="521" width="31" height="17" fontSize="12" text="角度"/>
+
+	<s:Button x="717" y="514" label="分享" click="isShareResult()"/>
+	<s:BorderContainer x="527" y="507" backgroundColor="0x808080" width="80" height="32">
+		<s:Image id="frontPrint" width="78" height="30"/>
+		<s:Label x="25" y="8" color="#FFFFFF" fontFamily="幼圆" fontSize="14" fontStyle="normal"
+				 fontWeight="bold" text="正面" textDecoration="none"/>
+	</s:BorderContainer>
+	<s:BorderContainer x="627" y="507" backgroundColor="0x808080" width="80" height="32">
+		<s:Image id="backPrint" width="78" height="30"/>
+		<s:Label x="25" y="8" color="#FFFFFF" fontFamily="幼圆" fontSize="14" fontStyle="normal"
+				 fontWeight="bold" text="背面" textDecoration="none"/>
+	</s:BorderContainer>
+	
+</s:Application>
+

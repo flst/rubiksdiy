@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+				width="750" height="500" close="PopUpManager.removePopUp(this);"
+				creationComplete="init()" dropShadowVisible="true" showCloseButton="true" title="预览">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.*;
+			import mx.controls.Alert;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.managers.PopUpManager;
+			import mx.events.CloseEvent;
+			
+			private function init():void { 
+				this.x = this.parent.width / 2 - this.width / 2;
+				this.y = this.parent.height / 2 - this.height / 2;
+				//preImage.smoothBitmapContent = true;
+			}
+			
+			
+			public var fileName:String;
+			public var printPicData:BitmapData;
+			public var prePicData:BitmapData;
+			/*private function SaveResult():void 
+			{
+				PopUpManager.removePopUp(this);
+			}*/
+			
+			private function SaveResult():void{
+				var file:FileReference=new FileReference();
+				file.addEventListener(Event.COMPLETE,downloadComplete);
+				file.save(new JPEGEncoder(80).encode(printPicData),fileName+".jpg");
+			}
+			
+			private function downloadComplete(event:Event):void{
+				Alert.show("成功保存图片到本地！","提示",Alert.YES,this,alertClose);
+				this.parentApplication.m_isSaveOK = true;
+			}
+			private function alertClose(event:CloseEvent):void{ 
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox id="vbox" x="0" y="0" width="740" height="420" borderColor="#777777" backgroundColor="0x808080"
+			 borderVisible="true" dropShadowVisible="false">
+		
+		<mx:Image id="preImage" width="740" height="420"/>
+	</mx:VBox>
+	<mx:HBox width="740" height="26" horizontalAlign="center">    
+		<mx:Button label="保存" click="SaveResult();" />
+		<mx:Button label="取消" click="PopUpManager.removePopUp(this);" />
+	</mx:HBox>
+</mx:TitleWindow>

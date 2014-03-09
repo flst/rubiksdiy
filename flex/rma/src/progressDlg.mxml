@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+				width="426" height="102" close="PopUpManager.removePopUp(this);"
+				creationComplete="init()" dropShadowVisible="true" showCloseButton="true"
+				title="请耐心等待哟，很快就能完成！">
+	<mx:Script>
+		<![CDATA[
+			
+			import mx.managers.PopUpManager;
+			
+			private function init():void { 
+				
+			}
+		
+		]]>
+	</mx:Script>
+	<mx:ProgressBar id="shareProgress"  x="313" y="234" width="414" height="58"
+					label="上传进度" mode="manual"/>
+</mx:TitleWindow>
