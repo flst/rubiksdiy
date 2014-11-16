@@ -31,10 +31,11 @@
               请 <a href="#myModal" data-toggle="modal" class="navbar-link"  id="nav_signin">登陆</a> | <a href="#myModal" data-toggle="modal" class="navbar-link" id="nav_signup">注册</a> </p>
             <?php }	?>
             <ul class="nav">
-              <li id="li_rma"><a href="/rma/">魔板图</a></li>
+              <li id="li_rma"><a href="/rma/">魔板图设计助手</a></li>
+              <li><a href="/cube_teacher/">魔方复原教程助手</a></li>
               <li><a class="on_build">公式壁纸</a></li>
               <li><a class="on_build">魔方贴纸</a></li>
-			  <li id="li_to_freind"><a href="to_freinds.php">致魔友</a></li>
+			  <li id="li_blog"><a href="/blog/" target="_blank">博客</a></li>
             </ul>
           </div>
           <!--/.nav-collapse -->
