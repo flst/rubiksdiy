@@ -6,6 +6,7 @@ var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " 
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc20edab51389fc339f0b8d2c2eca7702' type='text/javascript'%3E%3C/script%3E"));
 </script>
 </p>
+<p>友情连接： <a href="http://www.qmnovel.com" target="_blank">启明文学</a></p>
     </footer>
     
 <script src="../js/jquery.min.js"></script>
