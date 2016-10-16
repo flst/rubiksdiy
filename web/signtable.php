@@ -1,7 +1,7 @@
 
    <style type="text/css">
         .form-signin {
-        max-width: 510px;
+        max-width: 330px;
         padding: 19px 29px 29px;
         margin: 0 auto 20px;
         background-color: #fff;
@@ -28,7 +28,7 @@
 
 <form class="form-signin">
 <div class="row">
-    <div class="span3" style="border-right:solid 1px #eeeeee; padding-right:30px;">
+    <div class="span">
         <div class="alert alert-block alert-error fade in hide" style="margin-bottom:5px; padding:5px;">
         	<p><i class="icon-exclamation-sign icon-white"></i> 邮箱或密码不正确</p>
         </div>
@@ -59,7 +59,7 @@
     </div>  
  
     
-    <div class="span2">
+    <!--<div class="span2">
             <h4>或者使用</h4>
      
        <div style="margin-bottom:20px;"> <a class="zg-btn-red js-bindweibo" href="javascript:;">新浪微博账号登录</a></div>
@@ -72,7 +72,7 @@
         
         </div>
         <div style="margin-top:20px; padding-top:20px; border-top:solid 1px #eeeeee;">也可以直接 <a href="/rma/"><b>>>进入</b></a></div>
-    </div>
+    </div>-->
 </div>
 </form>
 
@@ -126,6 +126,5 @@
 		});
 	});
 	
-
 
     </script>

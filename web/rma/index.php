@@ -8,7 +8,7 @@ include_once("../inc/conn.php");
     <meta charset="utf-8">
     <title>魔板图DIY</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <?php include '../inc/meta.php';?>
     <meta name="author" content="">
 <style>
 #scrollUp {
@@ -26,7 +26,7 @@ include_once("../inc/conn.php");
     <script src="../Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
   </head>
 
-  <body">
+  <body>
   
   <input type="hidden" id="navli" value="li_rma">
   <?php include '../inc/header.php';?>

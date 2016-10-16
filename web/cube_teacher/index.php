@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="魔方，复原，还原，教程，教学，公式，图解，口诀，最强魔方教程">
-    <meta name="description" content="这是一款三阶魔方初学者教学软件，可以手把手像一位老师一样，一步一步的教你复原魔方">
+    <meta name="keywords" content="魔方，复原，还原，教程，教学，公式，图解，口诀，最强魔方教程, 魔方教程">
+    <meta name="description" content="这是一款三阶魔方初学者教学软件（魔方教程），可以手把手像一位老师一样，一步一步的教你复原魔方">
     <meta name="author" content="sunweiwei">
-    <meta http-equiv=”Cache-Control” content=”no-transform” />
-    <meta http-equiv=”Cache-Control” content=”no-siteapp” />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
     <link rel="SHORTCUT ICON" href="../img/webicon.ico">
 
@@ -68,16 +68,13 @@ function isMobile(){
 
       	<ul class="nav nav-pills pull-right" role="tablist" id="restart">
           <li role="presentation" class="active"><a href="#" onclick="location.reload()">重来</a></li>
+          <li><a href="doc/tutorial.zip" target="_blank">下载书面教程</a></li>
         </ul>
         <h3 class="text-muted">魔方复原助手</h3>
-
       </div>
 		<?php 
 			if(!isMobile()){
-
-
-
-			echo '<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>';
+			echo '<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more">分享：</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>';
 			}
 
 		?>
@@ -90,8 +87,8 @@ function isMobile(){
         <p class="lead">1.约需用2分钟，将魔方状态输入软件<br><img src="img/input_method.png" width="100%"></p>
         <p class="lead">2.软件用层先法(7大步)解魔方，并一步一步教给您复原<br><img src="img/steps.png" width="100%"></p>
         <p class="lead">3.新手在复原过程中，在屏幕下方，可以点击“公式图例”查看公式并强化记忆，可点击“本步骤技巧”，学习当前步骤的复原技巧，以最终做到脱离该教程自己复原！<br><img src="img/tips.png" width="100%"></p>
-        <p class="lead">4.按照本软件提供的方法，要做到脱离教程复原，只需要记忆9个公式，而这9个公式很多做法是对称的，9个公式加起来的信息记忆量不及一首七言律诗！：）简单吧！<br></p>
-        <p class="lead">5.我们还在努力完善功能中，有任何问题欢迎反馈到flst@qq.com，感谢支持！<br>
+        <p class="lead">4.按照本软件提供的方法，要做到脱离魔方教程复原，只需要记忆9个公式，而这9个公式很多做法是对称的，9个公式加起来的信息记忆量不及一首七言律诗！：）简单吧！<br></p>
+        <p class="lead">5.我们的魔方教程还在努力完善功能中，有任何问题欢迎反馈到flst@qq.com，感谢支持！<br>
         <p class="lead"><b><font color="#ff0000">6.只要您有耐心，慢慢学与做，我相信该软件一定能教会您，加油！</font></b><br></p>
         <hr>
 
@@ -641,11 +638,63 @@ function isMobile(){
   		<div class="modal-dialog">
     		<div class="modal-content">
       		<div class="modal-header bdsharebuttonbox">
-        		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>欢迎分享给微信好友</h4>
+        		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">欢迎分享给微信好友</h4>
       		</div>
       		
       		<div class="modal-body" id="share_your_result_content_by_pc">
       				
+      		</div>
+
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">关闭<span class='hint'>魔方教程</span></button>
+      		</div>
+    		</div>
+  		</div>
+	</div>
+
+	<div class="modal fade" id="submit_your_commends" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      		<div class="modal-header bdsharebuttonbox">
+        		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        		<h4 class="modal-title" id="myModalLabel">给软件作者提建议</h4>
+      		</div>
+      		
+      		<div class="modal-body" id="submit_your_commends_content">
+
+        		<p>昵称：<input id="nickname" type="input"></input></p>
+        		<br/>
+       			<p>邮箱：<input id="email" type="input"></input></p>
+       			<br/>
+       			<p>建议：</p>
+        		<p><textarea id="feedback_text" style="width:100%" rows="3"></textarea></p>
+        		<p><a id="submit_feedback" class="btn btn-default btn-success" role="button">提交建议</a></p>        
+        		<p>也可以直接给我发送电子邮件：flst@qq.com ，我会尽快回复和尽力改进</p>
+        			
+      		</div>
+
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">关闭<span class='hint'>魔方教程</span></button>
+      		</div>
+    		</div>
+  		</div>
+	</div>
+
+	<div class="modal fade" id="donate_author" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      		<div class="modal-header bdsharebuttonbox">
+        		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        		<h4 class="modal-title" id="myModalLabel">打赏作者2元钱</h4>
+      		</div>
+      		
+      		<div class="modal-body" id="donate_author_content">
+
+        		<p>如果您在用电脑：直接用手机微信扫一扫二维码</p>
+        		<p>如果您在用手机：可以长按图片并保存图片到相册，再用微信扫一扫功能，打开相册识别</p>      
+        		<p><img src="img/pay2.jpg" width="300"></p>
+        			
       		</div>
 
       		<div class="modal-footer">
@@ -661,6 +710,7 @@ function isMobile(){
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         		<h4 class="modal-title" id="myModalLabel">本步骤技巧（图中公式需逐步记忆）</h4>
+
       		</div>
       		<?php
 				$content = array();
@@ -729,7 +779,7 @@ function isMobile(){
 	$end_title[] = "第4步也完成，这步有点简单，是不？！<span class='hint'>魔方教程</span>";
 	$end_title[] = "完成第5步，胜利更近一步！<span class='hint'>魔方教程</span>";
 	$end_title[] = "第6步搞定，加油！还有最后一步！<span class='hint'>魔方教程</span>";
-	$end_title[] = "恭喜你学会了用层先法复原魔方！后续练习，可以慢慢牢记‘复原公式’哟，记得帮忙分享到朋友圈哟<span class='hint'>魔方教程</span>";
+	$end_title[] = "恭喜你学会了用层先法复原魔方！后续练习，可以慢慢牢记‘复原公式’<span class='hint'>魔方教程</span>";
 
 
 	$button_title = "";
@@ -772,14 +822,21 @@ function isMobile(){
         <p>
         <?php if ($i<6){?>
         <a id="start_step_<?php echo $i+2;?>" class="btn btn-default btn-success" href="#top" role="button"<?php echo $next_step_xml;?>><?php echo $button_title;?></a>
-        <?php }else{
+        <?php }
+        else{
         	if(isMobile()){?>
-        	<a id="share_result" class="btn btn-default btn-success" role="button" data-toggle="modal" data-target="#share_your_result">分享给微信好友</a>
+        	<a id="share_result" class="btn btn-default btn-success" role="button" data-toggle="modal" data-target="#share_your_result">微信分享</a>
         	<?php }else{?>
-        	<a id="share_result_by_pc" class="btn btn-default btn-success" role="button" data-toggle="modal" data-target="#share_your_result_by_pc">分享给微信好友</a>
-		<?php }
-		}?>
+        	<a id="share_result_by_pc" class="btn btn-default btn-success" role="button" data-toggle="modal" data-target="#share_your_result_by_pc">微信分享</a>
+			<?php }?>
+        	<a id="submit_your_commends_button" class="btn btn-default btn-success" role="button" data-toggle="modal" data-target="#submit_your_commends">吐槽作者</a>
+        	<a id="donate_author_button" class="btn btn-default btn-success" role="button" data-toggle="modal" data-target="#donate_author">打赏作者</a>
+        	<br/>
+        	<p></p>
+        
+		<?php }?>
         </p>
+        
       </div>
 <?php } ?>
    <!--   <div id="step_2" step=2 class="row marketing" style="text-align: left;">
@@ -944,22 +1001,22 @@ function isMobile(){
       </div>-->
 
 <nav id="step_naver" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-   <div style="text-align: center; padding-top:6px; padding-bottom:12px; height:60px;">
+   <div style="text-align: center; padding-top:6px; padding-bottom:6px; height:40px;">
    		<button class="btn btn-primary btn-default" data-toggle="modal" data-target="#cube_formula_demo">公式图例</button>
    		<button class="btn btn-primary btn-default" data-toggle="modal" data-target="#step_skills">本步骤技巧</button>
    </div>
 </nav>
 
-
       <div class="footer">
+      	<div id="footer_content">
         <p>&copy; Copyright 风流沙驼,  Email: <a href="mailto:flst@qq.com">flst@qq.com</a>  访问主站：<a href="http://www.rubiksdiy.com/">http://www.rubiksdiy.com/</a><div>
 		 <script type="text/javascript">
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc20edab51389fc339f0b8d2c2eca7702' type='text/javascript'%3E%3C/script%3E"));
 </script>
         </p>
-      
-      </div>
+      	</div>
+      </div> <!-- /footer_content -->
 
     </div> <!-- /container -->
 
@@ -968,10 +1025,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/ie-emulation-modes-warning.js"></script>
-    <script src="js/cube.js"></script>
-
-   
-
+    <script src="js/cube.js"></script
 
   </body>
   </html>

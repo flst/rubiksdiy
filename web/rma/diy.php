@@ -8,6 +8,8 @@ include_once("../inc/conn.php");
 <title>魔板DIY工具</title>
 <meta name="google" value="notranslate" />         
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php include '../inc/meta.php';?>
+<?php include '../inc/meta.php';?>
 
 <style type="text/css" media="screen"> 
    html, body  { height:100%; }

@@ -1,0 +1,55 @@
+body {
+  min-height: 2000px;
+  padding-top: 70px;
+}
+
+.red {
+	color: #ff0000;
+}
+
+.green {
+	color: #00ff00;
+}
+
+
+
+@font-face{
+font-family:'lcd1';
+src: url('TRANA___.TTF');
+}
+
+@font-face{
+font-family:'lcd2';
+src: url('liquidcrystallight.ttf');
+}
+
+@font-face{
+font-family:'lcd3';
+src: url('LED.ttf');
+}
+
+@font-face{
+font-family:'lcd4';
+src: url('EHSMB.TTF');
+}
+
+
+
+.unselect {
+    -webkit-user-select: none; 
+    -moz-user-select: none;    
+    -khtml-user-select: none;  
+    -ms-user-select: none;    
+ 
+    /* 以下两个属性目前并未支持，写在这里为了减少风险 */
+    -o-user-select: none;
+    user-select: none;  
+}
+
+.container {
+	text-align: center;
+}
+
+.ui-loader-default{ display:none}
+.ui-mobile-viewport{ border:none;}
+.ui-page {padding: 0; margin: 0; outline: 0} 

@@ -3,23 +3,47 @@
 	{
 		"selected_items":
 		[
+			[
+				"timer",
+				"timer_value"
+			],
+			[
+				"c",
+				"color"
+			],
+			[
+				"ti",
+				"timer_status"
+			],
+			[
+				"fu",
+				"function"
+			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "voice_search/index.html",
+			"file": "timer/index.php",
 			"settings":
 			{
-				"buffer_size": 1288,
+				"buffer_size": 2076,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "index.php",
+			"file": "timer/timer.js",
 			"settings":
 			{
-				"buffer_size": 1341,
+				"buffer_size": 1736,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "timer/timer.css",
+			"settings":
+			{
+				"buffer_size": 436,
 				"line_ending": "Unix"
 			}
 		}
@@ -48,6 +72,16 @@
 	},
 	"file_history":
 	[
+		"/develop/rubiksdiy/web/js/jquery.mobile-1.3.2.min.js",
+		"/develop/rubiksdiy/web/css/bootstrap.css",
+		"/develop/rubiksdiy/web/timer/timer.css",
+		"/develop/rubiksdiy/web/js/jquery.min.js",
+		"/develop/rubiksdiy/web/cube_teacher/js/cube.js",
+		"/develop/rubiksdiy/web/mail.php",
+		"/develop/rubiksdiy/web/cube_teacher/js/jquery.min.js",
+		"/develop/rubiksdiy/web/voice_search/index.html",
+		"/develop/rubiksdiy/web/index.php",
+		"/develop/rubiksdiy/web/timer/timer.php",
 		"/Users/sunweiwei/Downloads/cube-teacher-master/php/cube_teacher.php"
 	],
 	"find":
@@ -66,6 +100,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"startTime",
+			"timer_value",
 			"trim",
 			"POST",
 			"post",
@@ -91,23 +127,23 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "voice_search/index.html",
+					"file": "timer/index.php",
 					"settings":
 					{
-						"buffer_size": 1288,
+						"buffer_size": 2076,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								679,
-								679
+								1628,
+								1628
 							]
 						],
 						"settings":
@@ -124,25 +160,50 @@
 				},
 				{
 					"buffer": 1,
-					"file": "index.php",
+					"file": "timer/timer.js",
 					"settings":
 					{
-						"buffer_size": 1341,
+						"buffer_size": 1736,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								516,
-								516
+								1258,
+								1258
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 861.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "timer/timer.css",
+					"settings":
+					{
+						"buffer_size": 436,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								318,
+								318
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -209,6 +270,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 239.0,
 	"status_bar_visible": true
 }
