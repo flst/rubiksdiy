@@ -1,0 +1,67 @@
+.container {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+.match {
+	height: 80px;
+	line-height: 35px;
+	
+	font-size: 30px;
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid #eee;
+	background-color: #f9f9f9; 
+	padding-top: 10px;
+
+	float: left;
+	position: absolute;
+	left:0px;
+}
+
+.match_title {
+	height: 80px;
+	line-height: 35px;
+	
+	font-size: 30px;
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid #eee;
+	background-color: #f9f9f9; 
+	padding-top: 10px;
+
+	float: left;
+	position: absolute;
+	left:0px;
+	top:30px;
+	display: none;
+}
+
+.match_detail {
+	width: 100%;
+	text-align: center;
+	float: left;
+	position: absolute;
+	left:0px;
+	top:140px;
+	display: none;
+}
+
+#match1 {
+	top: 50px;
+}
+#match2 {
+	top: 140px;
+}
+
+#match3 {
+	top: 230px;
+}
+
+#match4 {
+	top: 320px;
+}
+
+#match5 {
+	top: 410px;
+}

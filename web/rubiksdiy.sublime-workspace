@@ -4,16 +4,84 @@
 		"selected_items":
 		[
 			[
+				"pa",
+				"padding"
+			],
+			[
+				"id",
+				"id_str"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"bor",
+				"border-top"
+			],
+			[
+				"h",
+				"html"
+			],
+			[
+				"in",
+				"z-index"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"si",
+				"font-size"
+			],
+			[
+				"bac",
+				"background-color"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"ret",
+				"return"
+			],
+			[
+				"a",
+				"append"
+			],
+			[
+				"av",
+				"avg5"
+			],
+			[
+				"cur",
+				"cur_record"
+			],
+			[
+				"ti",
+				"timeToStr"
+			],
+			[
+				"wh",
+				"width"
+			],
+			[
+				"bo",
+				"border"
+			],
+			[
+				"pad",
+				"padding-top"
+			],
+			[
 				"timer",
 				"timer_value"
 			],
 			[
 				"c",
 				"color"
-			],
-			[
-				"ti",
-				"timer_status"
 			],
 			[
 				"fu",
@@ -24,26 +92,36 @@
 	"buffers":
 	[
 		{
-			"file": "timer/index.php",
+			"file": "sports/index.html",
 			"settings":
 			{
-				"buffer_size": 2076,
+				"buffer_size": 1914,
+				"line_ending": "Unix",
+				"name": "index.html"
+			}
+		},
+		{
+			"file": "sports/sports.js",
+			"settings":
+			{
+				"buffer_size": 727,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "sports/sports.css",
+			"settings":
+			{
+				"buffer_size": 812,
+				"line_ending": "Unix",
+				"name": ".match {"
 			}
 		},
 		{
 			"file": "timer/timer.js",
 			"settings":
 			{
-				"buffer_size": 1736,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "timer/timer.css",
-			"settings":
-			{
-				"buffer_size": 436,
+				"buffer_size": 4606,
 				"line_ending": "Unix"
 			}
 		}
@@ -72,11 +150,25 @@
 	},
 	"file_history":
 	[
+		"/develop/rubiksdiy/web/inc/conn.php",
+		"/develop/rubiksdiy/web/timer/timer.js",
+		"/develop/rubiksdiy/web/timer/timer.css",
+		"/develop/rubiksdiy/web/timer/index.php",
+		"/develop/rubiksdiy/web/rma/diy.php",
+		"/develop/rubiksdiy/web/inc/header.php",
+		"/develop/rubiksdiy/web/signtable.php",
+		"/develop/rubiksdiy/web/timer/get_formula.php",
+		"/develop/rubiksdiy/web/cube_teacher/js/cube.js",
+		"/develop/rubiksdiy/web/css/bootstrap.min.css",
+		"/develop/rubiksdiy/web/cube_teacher/cube_base_class.php",
+		"/develop/rubiksdiy/web/cube_teacher/cube_teacher.php",
+		"/develop/rubiksdiy/web/cube_teacher/cube_disruptor.php",
+		"/develop/rubiksdiy/web/rma/index.php",
+		"/develop/rubiksdiy/web/css/main.css",
+		"/develop/rubiksdiy/web/inc/check_cookie.php",
 		"/develop/rubiksdiy/web/js/jquery.mobile-1.3.2.min.js",
 		"/develop/rubiksdiy/web/css/bootstrap.css",
-		"/develop/rubiksdiy/web/timer/timer.css",
 		"/develop/rubiksdiy/web/js/jquery.min.js",
-		"/develop/rubiksdiy/web/cube_teacher/js/cube.js",
 		"/develop/rubiksdiy/web/mail.php",
 		"/develop/rubiksdiy/web/cube_teacher/js/jquery.min.js",
 		"/develop/rubiksdiy/web/voice_search/index.html",
@@ -90,9 +182,11 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
+			"/develop/rubiksdiy/web/css",
+			"/develop/rubiksdiy/web"
 		]
 	},
 	"find_state":
@@ -100,6 +194,32 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			")\n",
+			"height",
+			"div id=\"timer_value\" class=\"unselect timer_stop_font_size\" >0.00</div>",
+			"console",
+			"update_record",
+			"get_base64_xml",
+			"png",
+			"text2png",
+			"png",
+			"完成状态",
+			"完成",
+			"完成状态",
+			"formula_item",
+			"get_cube_png",
+			"post",
+			"ajax",
+			":\">",
+			">\n",
+			"\">",
+			"      ",
+			"\n",
+			"modal",
+			"form-signin",
+			"body",
+			"?>\n",
+			"<input type=\"hidden\" value=\"<?php echo getUrl();?>\" id=\"signurl\">\n              <?php if(isset($_SESSION[\"user_account\"])){ ?>\n                欢迎你 <a href=\"/user/\" class=\"navbar-link\"><?php echo $_SESSION[\"user_account\"]?></a> | <a href=\"../signout.php?url=<?php echo escape(getUrl());?>\" class=\"navbar-link\">退出</a> </p>\n              <?php }else{?>\n                请 <a href=\"#myModal\" data-toggle=\"modal\" class=\"navbar-link\"  id=\"nav_signin\">登陆</a> | <a href=\"#myModal\" data-toggle=\"modal\" class=\"navbar-link\" id=\"nav_signup\">注册</a> </p>\n              <?php } ?>",
 			"startTime",
 			"timer_value",
 			"trim",
@@ -132,81 +252,106 @@
 			[
 				{
 					"buffer": 0,
-					"file": "timer/index.php",
+					"file": "sports/index.html",
 					"settings":
 					{
-						"buffer_size": 2076,
+						"buffer_size": 1914,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1628,
-								1628
+								1589,
+								1589
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"auto_name": "index.html",
+							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 154.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "timer/timer.js",
+					"file": "sports/sports.js",
 					"settings":
 					{
-						"buffer_size": 1736,
+						"buffer_size": 727,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1258,
-								1258
+								483,
+								483
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 861.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "timer/timer.css",
+					"file": "sports/sports.css",
 					"settings":
 					{
-						"buffer_size": 436,
+						"buffer_size": 812,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								318,
-								318
+								682,
+								682
 							]
 						],
 						"settings":
 						{
+							"auto_name": ".match {",
 							"syntax": "Packages/CSS/CSS.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 286.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "timer/timer.js",
+					"settings":
+					{
+						"buffer_size": 4606,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2154,
+								2136
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1382.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

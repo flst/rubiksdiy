@@ -11,7 +11,7 @@ include_once("../inc/conn.php");
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="SHORTCUT ICON" href="/img/webicon.ico">
-<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="bootstrap.min.css" rel="stylesheet">
 
 <link href="timer.css" rel="stylesheet">
 
@@ -19,8 +19,11 @@ include_once("../inc/conn.php");
 </head>
 
 <body>
+
+
+<div class="container">
 <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="header_naver">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -63,7 +66,6 @@ include_once("../inc/conn.php");
       </div>
     </nav>
 
-<div class="container">
 <div id="upset_cube" class="row" style="">
 <div id="upset_cube_bar">
     <!--<div class="btn-group">
@@ -104,7 +106,7 @@ include_once("../inc/conn.php");
 
 </div><!--end of upset_cube-->
 
-<div id="timer_value" style="font-size:8em; font-family:lcd1; padding-top:15px;" class="unselect">0.00</div>
+
 
 
 <!--<form> 
@@ -114,19 +116,19 @@ include_once("../inc/conn.php");
 
 
  
-<nav id="step_naver" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-   <div style="text-align: center; padding-top:6px; height:200px;">
+<nav id="footer_naver" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+   <div style="text-align: center; padding-top:6px; height:140px;">
       <div class="row">
           
           <div class="col-md-4 col-xs-4" style="border-right:1px solid #ccc;">
-            <div><h5>打乱图案</h5></div>  
+            <!--<div><h5>打乱图案</h5></div> -->
             <div id="upset_cube_formula_png" style="margin-bottom:12px;"></div>
 
             <button type="button" class="btn btn-default btn-sm">设置魔方</button>
           </div>
 
           <div class="col-md-8 col-xs-8">
-          <div><h5>历史记录</h5></div>
+          <!--<div><h5>历史记录</h5></div>-->
           <table class="table" style="font-size:12px;">
           <thead><tr><th>序号</th><th>时间</th><th>avg5</th><th>avg12</th></tr></thead>
           <tbody id="record_table">
@@ -144,6 +146,13 @@ include_once("../inc/conn.php");
 </nav>
 
 </div> <!-- /container -->
+
+<div id="timer_value_container">
+<div id="timer_value" class="unselect timer_stop_font_size" >0.00</div>
+
+</div> 
+
+
 <script src="/js/jquery.min.js"></script>
 <!--<script src="/jquery_mobile/jquery.mobile-1.4.2.min.js"></script>-->
 <script src="/js/bootstrap.min.js"></script>

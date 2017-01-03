@@ -49,7 +49,7 @@ html,body {
 }
 
 .timer_start_font_size {
-    font-size: 10em;
+    font-size: 80px;
 }
 
 .timer_stop_font_size {
@@ -61,19 +61,13 @@ html,body {
     width: 100%;
     text-align: center;
     margin: 0px; 
+    font-family:lcd1; 
     margin:0px;
+    z-index: -1;
     position: absolute;
     left: 0px;
     top: 0px;
     overflow: hidden;
-}
-
-#timer_value{
-    font-family:lcd1; 
-    position:absolute;
-    width: 100%;
-    margin-top:-110px;
-    top:50%;
 }
 
 

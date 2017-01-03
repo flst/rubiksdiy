@@ -12,8 +12,8 @@ var cur_record = 0
 
 $(document).ready(function(){
 	set_formula()
-	//line_height = $("#timer_value").height()
-    //$("#timer_value").css("line-height",line_height+"px")
+	line_height = $("#timer_value").height()
+    $("#timer_value").css("line-height",line_height+"px")
 
 //键盘操作
 	$(document).keydown(function(event) {
@@ -28,14 +28,14 @@ $(document).ready(function(){
 		pressUp()
 	});
 
-	/*$(window).resize(function(){
+	$(window).resize(function(){
         line_height = $("#timer_value").height()
         //console.log(line_height)
         $("#timer_value").css("line-height",line_height+"px")
-    }); */
+    });   
 	
 
-	$("#timer_value_container").on({
+	$("#timer_value").on({
 		touchstart: function(e){
 			pressDown()
 		},

@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0023)http://localhost/timer/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="SHORTCUT ICON" href="http://localhost/img/webicon.ico">
+<link href="./魔方计时器_files/bootstrap.min.css" rel="stylesheet">
+
+<link href="./魔方计时器_files/timer.css" rel="stylesheet">
+
+<title>魔方计时器</title>
+</head>
+
+<body>
+
+
+<div class="container">
+<!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="header_naver">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://localhost/timer/#">魔方谷-timer</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav" style="text-align:left;">
+            <li><a href="http://localhost/timer/#">首页</a></li>
+            <li class="active"><a href="http://localhost/timer/#contact">计时器</a></li>
+            <li class="dropdown">
+              <a href="http://localhost/timer/#" class="dropdown-toggle" data-toggle="dropdown">二级页面 <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="http://localhost/timer/#">Action</a></li>
+                <li><a href="http://localhost/timer/#">Another action</a></li>
+                <li><a href="http://localhost/timer/#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="http://localhost/timer/#">Separated link</a></li>
+                <li><a href="http://localhost/timer/#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            
+              <input type="hidden" value="http://localhost/timer/" id="signurl">
+              <li><a href="http://localhost/timer/#myModal" data-toggle="modal" class="navbar-link" id="nav_signin">登陆</a> </li>
+                          
+          </ul>
+          
+        </div><!--/.nav-collapse -->
+
+
+      </div>
+    </nav>
+
+<div id="upset_cube" class="row" style="">
+<div id="upset_cube_bar">
+    <!--<div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        打乱 <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">WCA</a></li>
+        <li class="divider"></li>
+        <li><a href="#">三阶</a></li>
+        <li><a href="#">四阶</a></li>
+        <li><a href="#">五姐</a></li>
+      </ul>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        类型 <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">WCA</a></li>
+        <li class="divider"></li>
+        <li><a href="#">三阶</a></li>
+        <li><a href="#">四阶</a></li>
+        <li><a href="#">五姐</a></li>
+      </ul>
+    </div>
+
+    <div class="input-group" style="width:100px; float:right; position: relative; margin-right:30px;">
+      <span class="input-group-addon">步长</span>
+      <input type="text" class="form-control" placeholder="10" style="width:50px;">
+    </div>-->
+
+  </div><!--end of upset_cube_bar-->
+  <div id="upset_cube_formula">U' B' D2 R B D' B2 U' B U R2 D' B2 F2 B2</div><!--end of upset_cube_formula-->
+  
+
+</div><!--end of upset_cube-->
+
+
+
+
+<!--<form> 
+<input type="button" value="开始计时！" id="timedCount" > 
+<input type="button" value="停止计时！" id="stopCount" > 
+</form> -->
+
+
+ 
+<nav id="footer_naver" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+   <div style="text-align: center; padding-top:6px; height:140px;">
+      <div class="row">
+          
+          <div class="col-md-4 col-xs-4" style="border-right:1px solid #ccc;">
+            <!--<div><h5>打乱图案</h5></div> -->
+            <div id="upset_cube_formula_png" style="margin-bottom:12px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGYAAAB+BAMAAAAkdHmnAAAAGFBMVEX///+Wlpb///8AAP//bAwA/wD//wD/AACxUstgAAAAAXRSTlMAQObYZgAABDhJREFUWIWV2DuyqzAMANB4B1HITeqwA4YVZIYNULAAGnoqtn8tW7YlReZDcYv3cmL0sQi+3WrXvfo/1Qs+lxG07VXkyVUUiEcXiGvpgvPk0V5FjJxFgpxEkrTtieQ5vY47Ji9wkjyO7s69luUOhXxw1YO782SZC/rcH4f9AMsSUAqJ9B5yS7xmykMOrd5EGEy84oehpLCWh0JiHj4865W7YwTz8LnzQtkhwbIIxFNeQW6R1yxKa+fhfrjOz0LQ3VU8s4oHRoWg7zuZt1Ilqu40jTKY3l/A6xP/lvq4yV+8Sq7pI8rxv1hpQ6v+TQpF0vf31G+vfIsUTCTTlEMCIn3Mw1xSOFNfA5Ep5SETygPPeshDISkPrmcX4D7ldcJ96iZ2QYm/IJ7ygNzfpJAkPg+S+FuVBPMAl9dxt9csSXMUjwO/a0TemlylSt7ce8WdxurThL979XlvwSylD1hp7T6Ajcyc+o2X1uw3tyWzzBR/SYXd1+5dzAIUf66SuX8CyWaBGH/JhrVPAylmubOUB/Q7D2BTRhK8VT13iHBztA4YZlDxjDIeGCzzFXnDNDEEg2kYSuUo9XlWzPDN8aeypzvzpGKG1G+lvVIwdTNQX5c2fmRSNd8mxl+2yyPEv2c80tvygfFLAy9hhi/o7U+EG9g3Eyiz+nkwgzSPjyTKrBBmCEjTgljlKw00XZghL2kYGp+DNH4cBhMQN20KacSO4mbFDR1nCCjzIRQaihkkZBAJ035KyphZw6Du0gwBaUJIMWPMxNne5RmijEdj/HAx9DjodO9k06ZvYabXBrQZpMkDg5vnrgHLbBSybb4wWWaNqTWNJ6bxqGqw2U0TkGnC/rANhmQZCE1bMR4Z5hv7vGb8jvoxQFujZjz6NX/a5BmyKZRN2kzMgDYgTJkpqd3g5iOU5r0CMz4aaTo/QzCT0mxxJRq4TScN/I03rNhLmi2EFOe6HxnC+FWDCYibgEIj4cjgpgs/mWMHKoMhQSTCICGDSBhE/mEZR0YxXcgHGdxRwmw4VGhkFBNTmMygDSIaGdlQ1rMZtNnyyChm0ga06aVJRJj3rgHL9BFVzOhnjGG6gGzjiWk8qhr8OtMEZJpwB7bBkCwTc1oxHhlmpPlSMV1KOTOpcjVDyZPmrU36mfH7kfQP+UuyuTltQBi2MBF8pQNpmg6Y4QEWQqiYnlIbE/n8SpPeNp/SxM6LBfNDX5j8Vot54Cag2BiDNOyV2ymDIUEkwohXe5AGETb6Uxp1GgDS9PiYpodyMfrUQRlE9PDP5ufAxinT5x8Z2WiSFypmkMY8Fmp2jX2SFN/nKmY1CSHbrNWTMVc1O4dpUDG7x4ONafZPFF1jmFr8GcGPgcMTUvdjzhyqNsock9x5cH6ZW+o8uEIIRXP+eL1J5vxBecgDnI0/o2BOBxMvPw2uEhwqF+Iv6DK51c/U/wGhNpezsEygeQAAAABJRU5ErkJggg=="></div>
+
+            <button type="button" class="btn btn-default btn-sm">设置魔方</button>
+          </div>
+
+          <div class="col-md-8 col-xs-8">
+          <!--<div><h5>历史记录</h5></div>-->
+          <table class="table" style="font-size:12px;">
+          <thead><tr><th>序号</th><th>时间</th><th>avg5</th><th>avg12</th></tr></thead>
+          <tbody id="record_table">
+            <tr><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <tr><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <tr><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <tr><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <tr><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+          </tbody>
+            
+          </table>
+          </div>
+      </div>
+   </div>
+</nav>
+
+</div> <!-- /container -->
+
+<div id="timer_value_container">
+<div id="timer_value" class="unselect timer_stop_font_size" style="line-height: 200px;">0.00</div>
+
+</div> 
+
+
+<script src="./魔方计时器_files/jquery.min.js"></script>
+<!--<script src="/jquery_mobile/jquery.mobile-1.4.2.min.js"></script>-->
+<script src="./魔方计时器_files/bootstrap.min.js"></script>
+<script src="./魔方计时器_files/timer.js"></script>
+
+<script language="javascript">
+
+  $(document).ready(function(){
+    
+    
+    $("#nav_signin").click(function(){
+      $("#signin_form").show();
+      $("#signup_form").hide();
+    });
+    
+    $("#nav_signup").click(function(){
+      $("#signup_form").show();
+      $("#signin_form").hide(); 
+    });
+  });
+    </script>
+   
+<!-- Modal -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background-color: rgb(245, 245, 245); text-align: left;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">登陆或注册</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" value="" id="signurl">
+
+   <style type="text/css">
+        .form-signin {
+        max-width: 330px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+    </style>
+
+<form class="form-signin">
+<div class="row">
+    <div class="span">
+        <div class="alert alert-block alert-error fade in hide" style="margin-bottom:5px; padding:5px;">
+        	<p><i class="icon-exclamation-sign icon-white"></i> 邮箱或密码不正确</p>
+        </div>
+    	<div id="signin_form">
+            <h4 class="form-signin-heading" style="float:left;">登陆</h4>
+            <h4 id="signup_link" class="form-signin-heading" style="float:right;">注册 <i class="icon-circle-arrow-right" style="margin-top:4px;"></i></h4>
+            <input type="text" class="input-block-level" placeholder="邮箱" id="singin_mail">
+            <input type="password" class="input-block-level" placeholder="密码" id="singin_password">
+            <div>
+            <label class="checkbox" style="float:left;">
+              <input type="checkbox" value="1" id="rememberme" name="rememberme"> 记住我
+            </label>
+            <span style="float:right;">忘记密码</span>
+            </div>
+            <button class="btn btn-large btn-primary" style="width:270px;" type="button" id="signin_btn">登陆</button>
+        </div>
+        
+        <div id="signup_form" style="display: none;">
+            <h4 class="form-signin-heading" style="float:left;">注册</h4>
+            <h4 id="signin_link" class="form-signin-heading" style="float:right;">登陆 <i class="icon-circle-arrow-right" style="margin-top:4px;"></i></h4>
+            <input type="text" class="input-block-level" placeholder="邮箱">
+            <input type="password" class="input-block-level" placeholder="密码">
+            <input type="text" class="input-block-level" placeholder="昵称">
+            
+            <button class="btn btn-large btn-primary" style="width:270px;" type="submit">注册</button>
+        </div>
+        
+    </div>  
+ 
+    
+    <!--<div class="span2">
+            <h4>或者使用</h4>
+     
+       <div style="margin-bottom:20px;"> <a class="zg-btn-red js-bindweibo" href="javascript:;">新浪微博账号登录</a></div>
+        <div class="intro">
+            <ul style="list-style-position: inside;">
+            <li>一键登录</li>
+            <li>快速注册</li>
+            <li>找到微博好友</li>
+            </ul>
+        
+        </div>
+        <div style="margin-top:20px; padding-top:20px; border-top:solid 1px #eeeeee;">也可以直接 <a href="/rma/"><b>>>进入</b></a></div>
+    </div>-->
+</div>
+</form>
+
+<!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./魔方计时器_files/ie.js"></script>
+    <script language="javascript">
+
+    $(document).ready(function(){
+		$("#signup_form").hide();
+		
+		$("#signup_link").mouseover(function(){
+	    	$("#signup_link").css("cursor","pointer");
+		});
+		
+		$("#signin_link").mouseover(function(){
+	    	$("#signin_link").css("cursor","pointer");
+		});
+		 
+		$("#signup_link").click(function(){
+			$("#signin_form").hide(500);//hide()
+			$("#signup_form").show(500);//hide()
+		});
+		
+		$("#signin_link").click(function(){
+			$("#signup_form").hide(500);//hide()
+			$("#signin_form").show(500);//hide()
+		});
+		
+		$("#signin_btn").click(function(){
+			mail=$("#singin_mail").val();
+			password=$("#singin_password").val();
+			//alert(password);
+			//return false;
+			$.post("/signin.php",{mail:mail,password:password},function(result){
+				//alert(result);
+				if(result=="1"){
+					//location.href = "rma/";
+					if($("#signurl").val()=="")
+						location.href = "rma/";
+					else
+						location.href = $("#signurl").val();
+				}
+				else
+				{	
+					$(".alert").show()
+					//alert("用户名密码错误");
+				}
+			});
+		});
+	});
+	
+
+    </script>      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+</body></html>
