@@ -1,0 +1,108 @@
+body {
+  padding-top: 70px;
+}
+
+html,body {
+    height: 97%;
+    margin: 0px;
+}
+
+.red {
+	color: #ff0000;
+}
+
+.green {
+	color: #00ff00;
+}
+
+.container {
+    margin: 0px;
+    width: 100%;
+    font-size: 100%;
+}
+#upset_cube {
+    background-color:#f8f8f8; 
+    margin: -15px -10px 1px -10px;
+    padding:10px;
+    min-height: 50px;
+    border-radius:5px;
+    border: 1px solid #ddd;
+}
+
+#upset_cube_formula {
+    font-size: 20px;
+    color: #535353;
+}
+
+#upset_cube_formula_png img {
+    width: 80px;
+}
+
+.table tbody tr td, .table tr th{
+    height: 10px;
+    line-height: 10px;
+    padding: 5px;
+}
+
+#footer_naver .table {
+    margin-bottom:10px;
+}
+
+.timer_start_font_size {
+    font-size: 12em;
+}
+
+.timer_stop_font_size {
+    font-size: 10em;
+}
+
+@font-face{
+font-family:'lcd1';
+src: url('TRANA___.TTF');
+}
+
+@font-face{
+font-family:'lcd2';
+src: url('liquidcrystallight.ttf');
+}
+
+@font-face{
+font-family:'lcd3';
+src: url('LED.ttf');
+}
+
+@font-face{
+font-family:'lcd4';
+src: url('EHSMB.TTF');
+}
+
+
+.unselect {
+    -webkit-user-select: none; 
+    -moz-user-select: none;    
+    -khtml-user-select: none;  
+    -ms-user-select: none;    
+ 
+    /* 以下两个属性目前并未支持，写在这里为了减少风险 */
+    -o-user-select: none;
+    user-select: none;  
+}
+
+.container {
+	text-align: center;
+    height: 100%;
+    margin: 0px;
+}
+
+#timer_value {
+    height: 100%;
+    margin: 0px;
+    line-height:3.5em;   
+    overflow:hidden; 
+    font-family:lcd1; 
+    margin-top:-30px;
+}
+
+.ui-loader-default{ display:none}
+.ui-mobile-viewport{ border:none;}
+.ui-page {padding: 0; margin: 0; outline: 0} 
