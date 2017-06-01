@@ -40,6 +40,7 @@ h1 em { color: #666; font-size: 3em; font-style: normal; letter-spacing: -6px; t
 
 /* LAYOUT */
 body { background: #fff }
+
 #header { 
 	background: #f9f9f9;
 	background: -webkit-gradient( linear, left bottom, left top, color-stop(0, #f2f2f2), color-stop(0.2, #ffffff), color-stop(0.5, #ffffff));
@@ -53,14 +54,14 @@ body { background: #fff }
 	
 /* GRADIENT */
 .green { background: #009900; }
-a span.green:hover  { background: #00ee00!important;  cursor: pointer;}
+/*a span.green:hover  { background: #00ee00!important;  cursor: pointer;}
 
 /*	.row1.col1.pos1 .green { background: -webkit-gradient(linear, right top, left top, from(#009900), to(#006900)); background: -moz-linear-gradient(right,  #009900,  #006900); }
 	.row2.col1.pos1 .green { background: -webkit-gradient(linear, right top, left top, from(#009900), to(#006900)); background: -moz-linear-gradient(right,  #009900,  #006900); }
 	.row3.col1.pos1 .green { background: -webkit-gradient(linear, right top, left top, from(#009900), to(#006900)); background: -moz-linear-gradient(right,  #009900,  #006900); }*/
 
 .red { background: #cf0c0c; }
-a span.red:hover { background: #ef1c1c!important; cursor: pointer;}
+/*a span.red:hover { background: #ef1c1c!important; cursor: pointer;}
 /*	.row1.col3.pos3 .red { background: -webkit-gradient(linear, right top, left center, from(#860b0b), to(#b00e0e)); background: -moz-linear-gradient(right,  #860b0b,  #b00e0e); }
 	.row2.col3.pos3 .red { background: -webkit-gradient(linear, right top, left center, from(#860b0b), to(#b00e0e)); background: -moz-linear-gradient(right,  #860b0b,  #b00e0e); }
 	.row3.col3.pos3 .red { background: -webkit-gradient(linear, right top, left center, from(#860b0b), to(#b00e0e)); background: -moz-linear-gradient(right,  #860b0b,  #b00e0e); }
@@ -70,7 +71,7 @@ a span.red:hover { background: #ef1c1c!important; cursor: pointer;}
 	.row3.col3.pos2 .red { background: -webkit-gradient(linear, right top, left center, from(#b00e0e), to(#cf0c0c)); background: -moz-linear-gradient(right,  #b00e0e,  #cf0c0c); }*/
 
 .white { background: #fff; color: #333;}
-a span.white:hover { background: #ccc!important;  cursor: pointer; }
+/*a span.white:hover { background: #ccc!important;  cursor: pointer; }
 /*a	.row1.col1.pos3 .white { background: -webkit-gradient(linear, right top, left center, from(#cccccc), to(#eeeeee)); background: -moz-linear-gradient(right,  #cccccc,  #eeeeee); }
 	.row1.col2.pos3 .white { background: -webkit-gradient(linear, right top, left center, from(#dddddd), to(#f0f0f0)); background: -moz-linear-gradient(right,  #dddddd,  #f0f0f0); }
 	.row1.col3.pos3 .white { background: -webkit-gradient(linear, right top, left center, from(#dddddd), to(#ffffff)); background: -moz-linear-gradient(right,  #dddddd,  #ffffff); }
@@ -81,11 +82,11 @@ a span.white:hover { background: #ccc!important;  cursor: pointer; }
 	.row1.col3.pos2 .white { background: -webkit-gradient(linear, right top, left center, from(#f9f9f9), to(#ffffff)); background: -moz-linear-gradient(right,  #f9f9f9,  #ffffff); }*/
 
 .blue { background: #0000cc; }
-a span.blue:hover { background: #2020ff!important;  cursor: pointer;}
+/*a span.blue:hover { background: #2020ff!important;  cursor: pointer;}*/
 .oringe { background: #ff6c0c; }
-a span.oringe:hover { background: #ff8c2c!important;  cursor: pointer;}
+/*a span.oringe:hover { background: #ff8c2c!important;  cursor: pointer;}*/
 .yellow { background: #dddd00; color: #333;}
-a span.yellow:hover { background: #ffff00!important;  cursor: pointer;}
+/*a span.yellow:hover { background: #ffff00!important;  cursor: pointer;}*/
 
 .empty { background: #666; }
 
@@ -179,13 +180,13 @@ li { /*-webkit-transition: all .3s ease-out; -moz-transition: all .3s ease-out; 
 .row3.col3.pos1 .tip { -moz-transform: scale(.962); -webkit-transform: scale(.962); -o-transform: scale(.96); }
 
 /* COLORS TRANSFORMS */
-a span { left: 0; top: -38px; }
-a span:first-child  { left: -22px; top: 0; }
-a span:last-child { left: 22px; top: 0; }
+.container a span { left: 0; top: -38px; }
+.container a span:first-child  { left: -22px; top: 0; }
+.container a span:last-child { left: 22px; top: 0; }
 
-a span { -moz-transform: rotate(-45deg) skew(15deg, 15deg); -webkit-transform: rotate(-45deg) skew(15deg, 15deg); -o-transform: rotate(-45deg) skew(15deg, 15deg); }
-a span:first-child  { -moz-transform: rotate(15deg) skew(15deg, 15deg); -webkit-transform: rotate(15deg) skew(15deg, 15deg); -o-transform: rotate(15deg) skew(15deg, 15deg); }
-a span:last-child { -moz-transform: rotate(-15deg) skew(-15deg, -15deg); -webkit-transform: rotate(-15deg) skew(-15deg, -15deg); -o-transform: rotate(-15deg) skew(-15deg, -15deg); }
+.container a span { -moz-transform: rotate(-45deg) skew(15deg, 15deg); -webkit-transform: rotate(-45deg) skew(15deg, 15deg); -o-transform: rotate(-45deg) skew(15deg, 15deg); }
+.container a span:first-child  { -moz-transform: rotate(15deg) skew(15deg, 15deg); -webkit-transform: rotate(15deg) skew(15deg, 15deg); -o-transform: rotate(15deg) skew(15deg, 15deg); }
+.container a span:last-child { -moz-transform: rotate(-15deg) skew(-15deg, -15deg); -webkit-transform: rotate(-15deg) skew(-15deg, -15deg); -o-transform: rotate(-15deg) skew(-15deg, -15deg); }
 
 /* CUBES POSITIONING */
 .row1.col1.pos1 { left: -92px; top: 96px; z-index: 23; }			/* white green red */
@@ -311,6 +312,11 @@ formula {
 
 .modal-body {
 	line-height: 22px;
+}
+
+.navbar_container {
+	padding-right: 15px;
+	padding-left: 15px;
 }
 
 /*.tips:after {

@@ -1,6 +1,12 @@
+<?php include_once("../inc/escape.php"); ?>
+<?php include_once("../inc/get_url.php"); ?>
+<?php
+include_once("../inc/check_cookie.php");
+include_once("../inc/conn.php");
+?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,7 +22,7 @@
     <title>完爆所有魔方教程，30分钟手把手教你复原-魔方教学软件、最强魔方教程</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/jumbotron-narrow.css" rel="stylesheet">
@@ -63,14 +69,15 @@ function isMobile(){
     }
 }
 ?>
-    <div class="container">
-      <div class="header" style="text-align:center;padding:10px;" id="top">
+<!-- hearder start -->
+ 	<?php include_once("../inc/header_v1.php"); ?>
 
-      	<ul class="nav nav-pills pull-right" role="tablist" id="restart">
-          <li role="presentation" class="active"><a href="#" onclick="location.reload()">重来</a></li>
-        </ul>
-        <h3 class="text-muted">魔方复原助手</h3>
-      </div>
+
+<!-- hearder stop -->
+
+    <div class="container">
+
+
 		<?php 
 			if(!isMobile()){
 			echo '<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more">分享：</a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>';
@@ -757,7 +764,7 @@ function isMobile(){
     		</div>
   		</div>
 	</div>
-
+<div style="margin-top:-40px;">
 <?php
 
 
@@ -837,6 +844,9 @@ function isMobile(){
         
       </div>
 <?php } ?>
+</div><!--<div id="step_div">-->
+
+
    <!--   <div id="step_2" step=2 class="row marketing" style="text-align: left;">
         <h3>“第2步：复原第一层角块”</h3>
         <p>
@@ -1021,10 +1031,10 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/ie-emulation-modes-warning.js"></script>
-    <script src="js/cube.js"></script
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/ie-emulation-modes-warning.js"></script>
+    <script src="js/cube.js"></script>
 
   </body>
   </html>

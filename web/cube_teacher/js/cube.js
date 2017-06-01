@@ -22,6 +22,7 @@ $(document).ready(function(){
 	$(".step_skills").hide();
 	$("#step_naver").hide();
 	$("#restart").hide();
+    //$("#step_7").show();
 
 
 	$("#getting_start").click(function(){ 
@@ -95,6 +96,7 @@ $(document).ready(function(){
 		{
 			$('#start_cube_modal').modal('show');
 			$("#step_naver").show();
+            $("#footer_content").hide();
 		}
 		$(".step_skills").hide();
 		$("#skill_"+next_step).show();
@@ -305,4 +307,20 @@ $(document).ready(function(){
     	$("#introduce").hide();
     	$("#introduce").hide();
     });*/
+
+    $("#submit_feedback").click(function(){
+        console.log($("#feedback_text").attr("value"));
+        var text = $("#feedback_text").attr("value");
+        var nickname = $("#nickname").attr("value");
+        var email = $("#email").attr("value");
+        if(text != ""){
+             $.post("./feedback_submit.php",{nickname:nickname,email:email,feedback_text:text},function(result){
+                alert(result);
+                //ret = eval("("+result+")");
+                console.log(result); 
+                $("#feedback_text").attr("value",""); 
+                alert("提交成功！");
+            });   
+        } 
+    });
 });

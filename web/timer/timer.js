@@ -90,8 +90,9 @@ $(document).ready(function(){
 
 	function hidden_all_div()
 	{
-		$("#upset_cube").fadeOut("fast")
-		$("#header_naver").hide()		
+		$("#upset_cube").fadeOut("fast",function (){
+			$("#header_naver").hide()		
+		})
 		$("#footer_naver").slideUp("fast",function () {
 
 			$("#timer_value").removeClass("timer_stop_font_size")
@@ -103,9 +104,9 @@ $(document).ready(function(){
 
 	function show_all_div()
 	{
+		$("#header_naver").show()
 		$("#footer_naver").slideDown("fast")
 		$("#upset_cube").fadeIn("fast")
-		$("#header_naver").show()
 		$("#timer_value").addClass("timer_stop_font_size")
 		$("#timer_value").removeClass("timer_start_font_size")
 	}

@@ -2,8 +2,8 @@
 $dbhost = 'localhost'; 
 //dbuser = 'root'; //mysql 
 //$dbpass = '123'; //mysql 
-$dbuser = 's430088db0'; //mysql 
-$dbpass = 'sun415liu220'; //mysql 
+$dbuser = 'root'; //mysql 
+$dbpass = '123'; //mysql 
 $dbname = 's430088db0'; //mysql 
 $connect = mysql_connect($dbhost,$dbuser,$dbpass); 
 mysql_query("SET NAMES 'UTF8'");
