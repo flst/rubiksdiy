@@ -70,7 +70,7 @@ $(document).ready(function(){
 			var color_map = {"R":"red","O":"oringe","G":"green","B":"blue","W":"white","Y":"yellow"};
 
 			for(i=0; i<color_cnt; i++){
-				console.log(color_map[cube_color[i]]);
+				//console.log(color_map[cube_color[i]]);
 				$("#block_"+i).attr("class", color_map[cube_color[i]]);
 				$("#form_block_"+i).attr("value", color_map[cube_color[i]]);
 			}
@@ -309,15 +309,15 @@ $(document).ready(function(){
     });*/
 
     $("#submit_feedback").click(function(){
-        console.log($("#feedback_text").attr("value"));
+        //console.log($("#feedback_text").attr("value"));
         var text = $("#feedback_text").attr("value");
         var nickname = $("#nickname").attr("value");
         var email = $("#email").attr("value");
         if(text != ""){
              $.post("./feedback_submit.php",{nickname:nickname,email:email,feedback_text:text},function(result){
-                alert(result);
+                //alert(result);
                 //ret = eval("("+result+")");
-                console.log(result); 
+                //console.log(result); 
                 $("#feedback_text").attr("value",""); 
                 alert("提交成功！");
             });   

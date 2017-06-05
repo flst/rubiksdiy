@@ -126,25 +126,6 @@ include_once("../inc/conn.php");
   });
     </script>
    
-<!-- Modal -->
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content"  style="background-color: rgb(245, 245, 245); text-align: left;">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">登陆或注册</h4>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" value="" id="signurl">
-<?php
-include_once("../signtable.php");
-?>
-      </div>
-      
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
