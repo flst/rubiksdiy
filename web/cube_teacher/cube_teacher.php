@@ -408,6 +408,10 @@ class CubeResolver {
                     $block_list[] = $b;
             }
 
+            //魔方状态异常
+            if (count($block_list) == 3 || count($block_list) == 1)
+                return false;
+
             $set_formula = "";
 
             if (count($block_list) == 4)
@@ -451,6 +455,7 @@ class CubeResolver {
             $formula_item = new FormulaItem($set_formula, $exe_formula, $this->get_cube_png(), "", "");
             $this->_formula_recorder->recorder_formula(3, $formula_item);
         }
+        return true;
     }
  
     function resolver_3st_corner_color() {
@@ -464,6 +469,10 @@ class CubeResolver {
                     else
                         $not_ok_block_list[] = $b;
             }
+
+            //魔方状态异常
+            if (count($ok_block_list) == 3)
+                return false;
 
             if (count($ok_block_list) == 4)
                 break;
@@ -565,6 +574,7 @@ class CubeResolver {
             $formula_item = new FormulaItem($set_formula, $exe_formula, $this->get_cube_png(), "", "");
             $this->_formula_recorder->recorder_formula(4, $formula_item);
         }
+        return true;
     }
 
     function resolver_3st_corner_pos() {
@@ -653,6 +663,7 @@ class CubeResolver {
             $formula_item = new FormulaItem($set_formula, $exe_formula, $this->get_cube_png(), "", "", "x");
             $this->_formula_recorder->recorder_formula(5, $formula_item);
         }
+        return true;
     }
 
     function resolver_3st_side_pos() {
@@ -669,6 +680,10 @@ class CubeResolver {
                     $is_recover_b = $b;
                 }
             }
+
+            //魔方状态异常
+            if ($is_recover_count == 2)
+                return false;
 
             $set_formula = "";
 
@@ -703,38 +718,39 @@ class CubeResolver {
             $formula_item = new FormulaItem($set_formula, $exe_formula, $this->get_cube_png(), "", "");
             $this->_formula_recorder->recorder_formula(6, $formula_item);
         }
+        return true;
     }
  
  
     function resolver_step($step) {
         if ($step == "1st_corner") {
             $this->resolver_1st_corner();
-            return;
+            return true;
         }
         
         if ($step == "2st_side") {
             $this->resolver_2st_side();
-            return;
+            return true;
         }
 
         if ($step == "3st_side_color") {
-            $this->resolver_3st_side_color();
-            return;
+            $ret = $this->resolver_3st_side_color();
+            return $ret;
         }
 
         if ($step == "3st_corner_color") {
-            $this->resolver_3st_corner_color();
-            return;
+            $ret = $this->resolver_3st_corner_color();
+            return $ret;
         }
             
         if ($step == "3st_corner_pos") {
             $this->resolver_3st_corner_pos();
-            return;
+            return true;
         }
 
         if ($step == "3st_side_pos") {
-            $this->resolver_3st_side_pos();
-            return;
+            $ret = $this->resolver_3st_side_pos();
+            return $ret;
         }
 
         //first layer side block
@@ -799,34 +815,35 @@ if (isset($_POST["block"])) {
 }
 else{
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!-- saved from url=(0119)http://media.smashingmagazine.com/cdn_smash/wp-content/uploads/uploader/images/css3-designs/css3-rubiks-cube/index.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>层先法教学助手（beta版），20分钟无成本学会魔方复原</title>
-        <link rel="stylesheet" href="./index_files/stylesheet.css" type="text/css">
-        <!--[if IE]>
-            <link rel="stylesheet" href="css/ie.css" type="text/css" />
-        <![endif]-->
-    </head>
-<body>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<!-- saved from url=(0119)http://media.smashingmagazine.com/cdn_smash/wp-content/uploads/uploader/images/css3-designs/css3-rubiks-cube/index.html -->
+	<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	        <title>层先法教学助手（beta版），20分钟无成本学会魔方复原</title>
+	        <link rel="stylesheet" href="./index_files/stylesheet.css" type="text/css">
+	        <!--[if IE]>
+	            <link rel="stylesheet" href="css/ie.css" type="text/css" />
+	        <![endif]-->
+	    </head>
+	<body>
 
-魔方教学助手beta版<br><br>
-该工具用途是超低成本的让初学者学会使用层先法复原魔方，当前beta版还会升级，后续升级会有：<br>
-1）将公式字母都变成直观的图片示例，类似互动游戏教学那样。<br>
-2）可以拍照输入手上魔方状态，可以手动在页面上填写魔方的颜色。<br><br>
-欢迎专业玩家试用反馈，问题欢迎反馈至 flst@qq.com <br>
-<br>
-<form method="POST" action="./cube_teacher.php">
-自定义打乱公式（黄上红前）：<input type="text" name="formula" value="<?php echo $disr_formula?>"> 
-<input type="submit" value="求解">
-</form>
-<hr>
+	魔方教学助手beta版<br><br>
+	该工具用途是超低成本的让初学者学会使用层先法复原魔方，当前beta版还会升级，后续升级会有：<br>
+	1）将公式字母都变成直观的图片示例，类似互动游戏教学那样。<br>
+	2）可以拍照输入手上魔方状态，可以手动在页面上填写魔方的颜色。<br><br>
+	欢迎专业玩家试用反馈，问题欢迎反馈至 flst@qq.com <br>
+	<br>
+	<form method="POST" action="./cube_teacher.php">
+	自定义打乱公式（黄上红前）：<input type="text" name="formula" value="<?php echo $disr_formula?>"> 
+	<input type="submit" value="求解">
+	</form>
+	<hr>
 
 <?php
 echo "开始打乱魔方：".$disr_formula;
 $cube_opt->execute_formula_by_string($disr_formula);
 echo "<br>";
-}
+} 
+//end else
 //echo "<br>";
 //$magic_cube->print_cube();
 //echo "<br>开始还原魔方，共7大步，请耐心还原，第一次预计20分钟完成复原<br>";
@@ -862,19 +879,35 @@ $cube_rsl->resolver_step("2st_side");
 
 //step 4, 3st layer side color
 //echo "<br>=====第四步, 还原顶层（十字）棱块颜色=====<br>";
-$cube_rsl->resolver_step("3st_side_color");
+if (!$cube_rsl->resolver_step("3st_side_color")) {
+	$err_json = array("error"=>"cube error");
+    echo json_encode($err_json);
+    exit;
+}
 
 //step 5, 3st layer corner color
 //echo "<br>=====第五步, 还原顶层角块颜色=====<br>";
-$cube_rsl->resolver_step("3st_corner_color");
+if (!$cube_rsl->resolver_step("3st_corner_color")) {
+	$err_json = array("error"=>"cube error");
+    echo json_encode($err_json);
+    exit;
+}
 
 //step 6, 3st layer corner pos
 //echo "<br>=====第六步, 还原顶层角块位置=====<br>";
-$cube_rsl->resolver_step("3st_corner_pos");
+if (!$cube_rsl->resolver_step("3st_corner_pos")) {
+	$err_json = array("error"=>"cube error");
+    echo json_encode($err_json);
+    exit;
+}
 
 //step 7, 3st layer side pos
 //echo "<br>=====第七步，还原顶层棱块位置=====<br>";
-$cube_rsl->resolver_step("3st_side_pos");
+if (!$cube_rsl->resolver_step("3st_side_pos")) {
+	$err_json = array("error"=>"cube error");
+    echo json_encode($err_json);
+    exit;
+}
 
 echo $formula_recorder->gen_json_output();
 //elapsed = (time.clock() - start)

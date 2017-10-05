@@ -233,6 +233,16 @@ $(document).ready(function(){
                 $("#getting_start").attr("disabled",false);
                 return;
             }
+
+            if (formula_recorder["error"] == "cube error") {
+                alert("魔方状态异常，不可复原，建议重新拆卸安装");
+                $("[step]").hide();
+                $("[step=-1]").show();
+                $("#start_resolve").attr("disabled",false);
+                $("#getting_start").attr("disabled",false);
+                return;
+            }
+
             $("#getting_start").attr("disabled",false);
 
             step_cnt = formula_recorder.length;
